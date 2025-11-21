@@ -7,7 +7,7 @@
 - Individual
 
 ## Needs To Have
-- List of songs
+- List of songs (two; one demo)
 - Lyrics
 - Microphone (robotics)
 - scrolling effect for match between rythmn and lyrics

@@ -1,72 +1,72 @@
 [Justin Bieber:]
-Oh, whoa-oh-oh-oh-oh
-Oh, whoa-oh-oh-oh, oh
-Oh, whoa, oh-oh-oh, oh, oh-oh, oh, oh-oh, oh
+2 | 5 | Oh, whoa-oh-oh-oh-oh
+6 | 8 | Oh, whoa-oh-oh-oh, oh
+7.5 | 12 | Oh, whoa, oh-oh-oh, oh, oh-oh, oh, oh-oh, oh
 
 [Justin Bieber (Ludacris):]
-You know you love me, I know you care (Yo, uh-huh)
-Just shout whenever and I'll be there (Yo, uh-huh)
-You are my love, you are my heart (Yo, uh-huh)
-And we will never, ever, ever be apart (Yo, uh-huh)
-Are we an item? Girl, quit playing (Yo, uh-huh)
-We're just friends, what are you saying? (Yo, uh-huh)
-Said, "There's another" and looked right in my eyes (Yo, uh-huh)
-My first love broke my heart for the first time, and I was like (Yo, uh-huh)
+14 | 17 | You know you love me, I know you care (Yo, uh-huh)
+17.5 | 21 | Just shout whenever and I'll be there (Yo, uh-huh)
+21.5 | 25 | You are my love, you are my heart (Yo, uh-huh)
+25.3 | 28 | And we will never, ever, ever be apart (Yo, uh-huh)
+28.4 | 32 | Are we an item? Girl, quit playing (Yo, uh-huh)
+32.4 | 36 | We're just friends, what are you saying? (Yo, uh-huh)
+36.4 | 39 | Said, "There's another" and looked right in my eyes (Yo, uh-huh)
+39.4 | 44 | My first love broke my heart for the first time, and I was like (Yo, uh-huh)
 
 [Justin Bieber:]
-Baby, baby, baby, oh
-Like baby, baby, baby, no
-Like baby, baby, baby, oh
-Thought you'd always be mine, mine
-Baby, baby, baby, oh
-Like baby, baby, baby, no
-Like baby, baby, baby, oh
-Thought you'd always be mine, mine
+44.4 | 47 | Baby, baby, baby, oh
+47.4 | 50 | Like baby, baby, baby, no
+50.6 | 54 | Like baby, baby, baby, oh
+55 | 58 | Thought you'd always be mine, mine
+59 | 61 | Baby, baby, baby, oh
+62 | 66 | Like baby, baby, baby, no
+67 | 69 | Like baby, baby, baby, oh
+70 | 72 | Thought you'd always be mine, mine
 
 [Justin Bieber (Ludacris):]
-Oh, for you, I would've done whatever (Yo, uh-huh)
-And I just can't believe we ain't together (Yo, uh-huh)
-And I wanna play it cool, but I'm losing you (Yo, uh-huh)
-I'll buy you anything, I'll buy you any ring (Yo, uh-huh)
-And I'm in pieces, baby, fix me (Yo, uh-huh)
-And just shake me 'til you wake me from this bad dream (Yo, uh-huh)
-I'm going down, down, down, down (Yo, uh-huh)
-And I just can't believe my first love won't be around, and I'm like
+73 | 76 | Oh, for you, I would've done whatever (Yo, uh-huh)
+77 | 80 | And I just can't believe we ain't together (Yo, uh-huh)
+81 | 84 | And I wanna play it cool, but I'm losing you (Yo, uh-huh)
+85 | 88 | I'll buy you anything, I'll buy you any ring (Yo, uh-huh)
+89 | 91 | And I'm in pieces, baby, fix me (Yo, uh-huh)
+92 | 95 | And just shake me 'til you wake me from this bad dream (Yo, uh-huh)
+96 | 99 | I'm going down, down, down, down (Yo, uh-huh)
+100 | 102 | And I just can't believe my first love won't be around, and I'm like
 
 [Justin Bieber:]
-Baby, baby, baby, oh
-Like baby, baby, baby, no
-Like baby, baby, baby, oh
-Thought you'd always be mine, mine
-Baby, baby, baby, oh
-Like baby, baby, baby, no
-Like baby, baby, baby, oh
-Thought you'd always be mine, mine
+103 | 106 | Baby, baby, baby, oh
+107 | 109 | Like baby, baby, baby, no
+110 | 114 | Like baby, baby, baby, oh
+115 | 117 | Thought you'd always be mine, mine
+118 | 120 | Baby, baby, baby, oh
+121 | 125 | Like baby, baby, baby, no
+126 | 129 | Like baby, baby, baby, oh
+130 | 132 | Thought you'd always be mine, mine
 
 [Ludacris:]
-(Luda) When I was thirteen, I had my first love
-There was nobody that compared to my baby, and nobody came between us nor could ever come above
-She had me going crazy, oh, I was starstruck
-She woke me up daily, don't need no Starbucks (Woo)
-She made my heart pound, and skip a beat
-When I see her in the street
-And at school on the playground, but I really wanna see her on the weekend
-She knows she got me dazing
-'Cause she was so amazing
-And now my heart is breaking
-But I just keep on saying
+133 | 136 | (Luda) When I was thirteen, I had my first love
+137 | 140 | There was nobody that compared to my baby, and nobody came between us nor could ever come above
+141 | 144 | She had me going crazy, oh, I was starstruck
+145 | 148 | She woke me up daily, don't need no Starbucks (Woo)
+148.3 | 150 | She made my heart pound, and skip a beat
+150.2 | 151 | When I see her in the street
+152 | 155 | And at school on the playground, but I really wanna see her on the weekend
+155.3 | 157 | She knows she got me dazing
+158 | 159 | 'Cause she was so amazing
+160 | 161 | And now my heart is breaking
+161.3 | 162 | But I just keep on saying
 
 [Justin Bieber:]
-Baby, baby, baby, oh
-Like baby, baby, baby, no
-Like baby, baby, baby, oh
-Thought you'd always be mine, mine
-Baby, baby, baby, oh
-Like baby, baby, baby, no
-Like baby, baby, baby, oh
-Thought you'd always be mine, mine
+163 | 165 | Baby, baby, baby, oh
+166 | 169 | Like baby, baby, baby, no
+170 | 173 | Like baby, baby, baby, oh
+174 | 177 | Thought you'd always be mine, mine
+178 | 180 | Baby, baby, baby, oh
+181 | 184 | Like baby, baby, baby, no
+185 | 188 | Like baby, baby, baby, oh
+189 | 191 | Thought you'd always be mine, mine
 
-I'm gone (Yeah-yeah-yeah, yeah-yeah-yeah)
-Now I'm all gone (Yeah-yeah-yeah, yeah-yeah-yeah)
-Now I'm all gone (Yeah-yeah-yeah, yeah-yeah-yeah)
-Now I'm all gone (Gone, gone, gone, gone), I'm gone
+192 | 196 | I'm gone (Yeah-yeah-yeah, yeah-yeah-yeah)
+197 | 199 | Now I'm all gone (Yeah-yeah-yeah, yeah-yeah-yeah)
+200 | 201 | Now I'm all gone (Yeah-yeah-yeah, yeah-yeah-yeah)
+202 | 205 | Now I'm all gone (Gone, gone, gone, gone), I'm gone
