@@ -1,17 +1,17 @@
 [Justin Bieber:]
-2 | 5 | Oh, whoa-oh-oh-oh-oh
+2.5 | 5 | Oh, whoa-oh-oh-oh-oh
 6 | 8 | Oh, whoa-oh-oh-oh, oh
-7.5 | 12 | Oh, whoa, oh-oh-oh, oh, oh-oh, oh, oh-oh, oh
+8.8 | 12 | Oh, whoa, oh-oh-oh, oh, oh-oh, oh, oh-oh, oh
 
 [Justin Bieber (Ludacris):]
 14 | 17 | You know you love me, I know you care (Yo, uh-huh)
-17.5 | 21 | Just shout whenever and I'll be there (Yo, uh-huh)
-21.5 | 25 | You are my love, you are my heart (Yo, uh-huh)
-25.3 | 28 | And we will never, ever, ever be apart (Yo, uh-huh)
-28.4 | 32 | Are we an item? Girl, quit playing (Yo, uh-huh)
-32.4 | 36 | We're just friends, what are you saying? (Yo, uh-huh)
-36.4 | 39 | Said, "There's another" and looked right in my eyes (Yo, uh-huh)
-39.4 | 44 | My first love broke my heart for the first time, and I was like (Yo, uh-huh)
+17.7 | 21.6 | Just shout whenever and I'll be there (Yo, uh-huh)
+21.7 | 25.6 | You are my love, you are my heart (Yo, uh-huh)
+25.7 | 28.6 | And we will never, ever, ever be apart (Yo, uh-huh)
+28.7 | 32.6 | Are we an item? Girl, quit playing (Yo, uh-huh)
+32.7 | 36.6 | We're just friends, what are you saying? (Yo, uh-huh)
+36.7 | 39.6 | Said, "There's another" and looked right in my eyes (Yo, uh-huh)
+39.7 | 44.6 | My first love broke my heart for the first time, and I was like (Yo, uh-huh)
 
 [Justin Bieber:]
 44.4 | 47 | Baby, baby, baby, oh

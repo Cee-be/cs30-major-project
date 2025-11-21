@@ -27,14 +27,22 @@ let time;
 let analyzer;
 let btn;
 let started = false;
+let btnvisi = true;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
 
   parseLyric();
+  buttonfunction();
+}
+
+function buttonfunction(){
   btn = createButton("Start Karaoke");
-  btn.position(20, 20);
+  btn.style('width', '750px');
+  btn.style('height', '80px');
+  btn.style('font-size', '30px');
+  btn.position(width/2 - 350, height/2 - 100);
   btn.mousePressed(startKaraoke);
 }
 
@@ -54,10 +62,25 @@ function start(){
     lyricDisplay();
   }
   else{
+    textFont('Courier New');
     textStyle(ITALIC);
     textSize(24);
     fill(0);
-    text("Click 'Start Karaoke' to begin", 20, 80);
+    text("Click 'Start Karaoke' to begin", width/2 - 200 , height/2 + 20);
+  }
+
+  if (btnvisi){
+    btn.show();
+  }
+  else {
+    btn.hide();
+  }
+}
+
+function mousePressed(){
+  if (mouseX > btn.x && mouseX < btn.x + btn.width && 
+    mouseY > btn.y && mouseY < btn.y + btn.height){
+    btnvisi = false;
   }
 }
 
@@ -73,7 +96,7 @@ function lyricDisplay(){
 
   for (let entry of lyrics){
     if (time >= entry.timeStart && time <= entry.timeStop){
-      text(entry.lyric, 100, 200);
+      text(entry.lyric, width/2 - 200, height/2);
       break;
     }
   }
