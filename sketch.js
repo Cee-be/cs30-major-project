@@ -49,12 +49,13 @@ function buttonfunction(){
   startBtn.mousePressed(startKaraoke);
 
   //Pause Button
-  pauseBtn = createButton("Pause");
-  pauseBtn.style('width', '150px');
-  pauseBtn.style('height', '50px');
+  pauseBtn = createImg('pause-button.png');
+  playBtn = createImg('play-button.png');
+  pauseBtn.style('width', '100px');
+  pauseBtn.style('height', '100px');
   pauseBtn.style('font-size', '30px');
-  pauseBtn.position(50, 100);
-  pauseBtn.mousePressed(pauseKaraoke);
+  pauseBtn.position(300, 600);
+  pauseBtn.mousePressed(playBtn, pauseKaraoke);
   pauseBtn.hide();
 
   //Reset Button
@@ -70,6 +71,8 @@ function buttonfunction(){
 function preload(){
   song = loadSound('justin-bieber_baby.mp3');
   rawLyrics = loadStrings("baby_lyrics.txt");
+  play = loadImage("play-button.png");
+  pause = loadImage("pause-button.png");
 }
 
 function draw() {
@@ -89,21 +92,14 @@ function start(){
     fill(0);
     text("Click 'Start Karaoke' to begin", width/2 - 200 , height/2 + 20);
   }
-
-  // if (btnvisi){
-  //   btn.show();
-  // }
-  // else {
-  //   btn.hide();
-  // }
 }
 
-function mousePressed(){
-  if (mouseX > btn.x && mouseX < btn.x + btn.width && 
-    mouseY > btn.y && mouseY < btn.y + btn.height){
-    btnvisi = false;
-  }
-}
+// function mousePressed(){
+//   if (mouseX > btn.x && mouseX < btn.x + btn.width && 
+//     mouseY > btn.y && mouseY < btn.y + btn.height){
+//     btnvisi = false;
+//   }
+//}
 
 function startKaraoke(){
   analyzer = new p5.Amplitude(0, 5);
@@ -117,6 +113,7 @@ function startKaraoke(){
 }
 
 function pauseKaraoke(){
+  //playBtn = createImg('play-button.png');
   if (song.isPlaying()){
     song.pause();
   }
@@ -143,6 +140,10 @@ function lyricDisplay(){
   for (let entry of lyrics){
     if (time >= entry.timeStart && time <= entry.timeStop){
       text(entry.lyric, width/2 - 200, height/2);
+      textSize(36);
+      fill(255);
+      stroke(0);
+      strokeWeight(0);
       break;
     }
   }
