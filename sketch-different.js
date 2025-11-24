@@ -1,0 +1,109 @@
+// Major project - Pitch Perfect
+// Ceberta Adum
+// Date
+//
+// Extra for Experts:
+// - describe what you did to take this project "above and beyond"
+
+
+// const lyrics = [
+//   {
+//     "timeStart" : 2,
+//     "timeStop" : 8,
+//     "lyric" : "Oh, whoa-oh-oh-oh-oh Oh, whoa-oh-oh-oh, oh"
+//   } ,
+//   {
+//     "timeStart" : 9,
+//     "timeStop" : 13,
+//     "lyric" : "Oh, whoa, oh-oh-oh, oh, oh-oh, oh, oh-oh, oh"
+//   }
+// ];
+
+let song;
+let rawLyrics;
+let lyrics = [];
+let time;
+let analyzer;
+let btn;
+let started = false;
+let btnvisi = true;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  rectMode(CENTER);
+
+  parseLyric();
+  buttonfunction();
+}
+
+function buttonfunction(){
+  btn = createButton("Start Karaoke");
+  btn.style('width', '750px');
+  btn.style('height', '80px');
+  btn.style('font-size', '30px');
+  btn.position(width/2 - 350, height/2 - 100);
+  btn.mousePressed(startKaraoke);
+}
+
+function preload(){
+  song = loadSound('justin-bieber_baby.mp3');
+  rawLyrics = loadStrings("baby_lyrics.txt");
+}
+
+function draw() {
+  background(220);
+  lyricDisplay();
+  start();
+}
+
+function start(){
+  if (started){
+    lyricDisplay();
+  }
+  else{
+    textFont('Courier New');
+    textStyle(ITALIC);
+    textSize(24);
+    text("Click 'Start Karaoke' to begin", width/2 - 200 , height/2 + 20);
+  }
+
+  if (btnvisi){
+    btn.show();
+  }
+  else {
+    btn.hide();
+  }
+}
+
+function startKaraoke(){
+  analyzer = new p5.Amplitude(0, 5);
+  analyzer.setInput(song);
+  song.loop();
+  started = true;
+}
+
+function lyricDisplay(){
+  time = song.currentTime();
+
+  for (let entry of lyrics){
+    if (time >= entry.timeStart && time <= entry.timeStop){
+      textSize(16);
+      fill(255);
+      stroke(0);
+      strokeWeight(4);
+      text(entry.lyric, width/2 - 350, height/2);
+      break;
+    }
+  }
+}
+
+function parseLyric(){
+  for (let line of rawLyrics){
+    let parts = line.split("|");
+    lyrics.push({
+      timeStart: Number(parts[0]),
+      timeStop: Number(parts[1]),
+      lyric: parts[2]
+    });
+  }
+}
