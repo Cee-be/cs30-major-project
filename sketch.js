@@ -24,6 +24,9 @@ let rawLyrics;
 let lyrics = [];
 let yStart = 0;
 let time;
+let currentButton;
+let play;
+let pause;
 let analyzer;
 let startBtn;
 let pauseBtn;
@@ -49,21 +52,29 @@ function buttonfunction(){
   startBtn.mousePressed(startKaraoke);
 
   //Pause Button
-  pauseBtn = createImg('pause-button.png');
-  playBtn = createImg('play-button.png');
+  pauseBtn = createImg('pause-button.png', 'Pause Button');
+  playBtn = createImg('play-button.png', 'Play Button');
   pauseBtn.style('width', '100px');
   pauseBtn.style('height', '100px');
-  pauseBtn.style('font-size', '30px');
-  pauseBtn.position(300, 600);
-  pauseBtn.mousePressed(playBtn, pauseKaraoke);
+  pauseBtn.position(width/2, 600);
+  pauseBtn.mousePressed('playBtn');
+  pauseBtn.mousePressed(changeButton);
   pauseBtn.hide();
 
+  // //Play Button
+  // playBtn = createImg('play-button.png');
+  // playBtn.style('width', '100px');
+  // playBtn.style('height', '100px');
+  // playBtn.style('font-size', '30px');
+  // playBtn.position(300, 600);
+  // playBtn.mousePressed(playKaraoke);
+  // playBtn.hide();
+
   //Reset Button
-  resetBtn = createButton("Reset");
-  resetBtn.style('width', '150x');
-  resetBtn.style('height', '50px');
-  resetBtn.style('font-size', '30px');
-  resetBtn.position(20, 100);
+  resetBtn = createImg('reset.png', 'Reset Button');
+  resetBtn.style('width', '100px');
+  resetBtn.style('height', '100px');
+  resetBtn.position(width/2 -200, 600);
   resetBtn.mousePressed(resetKaraoke);
   resetBtn.hide();
 }
@@ -73,6 +84,9 @@ function preload(){
   rawLyrics = loadStrings("baby_lyrics.txt");
   play = loadImage("play-button.png");
   pause = loadImage("pause-button.png");
+  reset = loadImage("reset.png");
+
+  currentButton = loadImage("pause-button.png");
 }
 
 function draw() {
@@ -94,13 +108,6 @@ function start(){
   }
 }
 
-// function mousePressed(){
-//   if (mouseX > btn.x && mouseX < btn.x + btn.width && 
-//     mouseY > btn.y && mouseY < btn.y + btn.height){
-//     btnvisi = false;
-//   }
-//}
-
 function startKaraoke(){
   analyzer = new p5.Amplitude(0, 5);
   analyzer.setInput(song);
@@ -112,19 +119,24 @@ function startKaraoke(){
   resetBtn.show();
 }
 
-function pauseKaraoke(){
-  //playBtn = createImg('play-button.png');
+function changeButton() {
   if (song.isPlaying()){
     song.pause();
   }
   else {
     song.play();
   }
+  if(currentImage === pause){
+    currentImage = play;
+  }
+  else{
+    currentImage = pausw;
+  }
 }
 
 function resetKaraoke(){
   song.stop();
-  song.currentTime(0);
+  song.currentTime(1);
 
   started = false;
   btnvisi = true;
@@ -139,7 +151,7 @@ function lyricDisplay(){
 
   for (let entry of lyrics){
     if (time >= entry.timeStart && time <= entry.timeStop){
-      text(entry.lyric, width/2 - 200, height/2);
+      text(entry.lyric, width/2 - 500, height/2);
       textSize(36);
       fill(255);
       stroke(0);
