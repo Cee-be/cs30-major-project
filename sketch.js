@@ -41,19 +41,14 @@ function setup() {
 }
 
 function buttonfunction(){
+
+  //Start Button
   btn = createButton("Start Karaoke");
   btn.style('width', '750px');
   btn.style('height', '80px');
   btn.style('font-size', '30px');
   btn.position(width/2 - 350, height/2 - 100);
   btn.mousePressed(startKaraoke);
-  //Start Button
-  startBtn = createButton("Start Karaoke");
-  startBtn.style('width', '750px');
-  startBtn.style('height', '80px');
-  startBtn.style('font-size', '30px');
-  startBtn.position(width/2 - 350, height/2 - 100);
-  startBtn.mousePressed(startKaraoke);
 
   //Pause Button
   pauseBtn = createImg('pause-button.png', 'Pause Button');
@@ -61,7 +56,7 @@ function buttonfunction(){
   pauseBtn.style('width', '100px');
   pauseBtn.style('height', '100px');
   pauseBtn.position(width/2, 600);
-  pauseBtn.mousePressed('playBtn');
+  pauseBtn.mousePressed(togglePause); //
   pauseBtn.mousePressed(changeButton);
   pauseBtn.hide();
 
@@ -116,13 +111,6 @@ function start(){
   }
   else {
     btn.hide();
-  }
-}
-
-function mousePressed(){
-  if (mouseX > btn.x && mouseX < btn.x + btn.width && 
-    mouseY > btn.y && mouseY < btn.y + btn.height){
-    btnvisi = false;
   }
 }
 
