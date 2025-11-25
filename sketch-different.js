@@ -22,11 +22,7 @@
 let song;
 let rawLyrics;
 let lyrics = [];
-let yStart = 0;
 let time;
-let currentButton;
-let play;
-let pause;
 let analyzer;
 let btn;
 let started = false;
@@ -47,50 +43,11 @@ function buttonfunction(){
   btn.style('font-size', '30px');
   btn.position(width/2 - 350, height/2 - 100);
   btn.mousePressed(startKaraoke);
-  //Start Button
-  startBtn = createButton("Start Karaoke");
-  startBtn.style('width', '750px');
-  startBtn.style('height', '80px');
-  startBtn.style('font-size', '30px');
-  startBtn.position(width/2 - 350, height/2 - 100);
-  startBtn.mousePressed(startKaraoke);
-
-  //Pause Button
-  pauseBtn = createImg('pause-button.png', 'Pause Button');
-  playBtn = createImg('play-button.png', 'Play Button');
-  pauseBtn.style('width', '100px');
-  pauseBtn.style('height', '100px');
-  pauseBtn.position(width/2, 600);
-  pauseBtn.mousePressed('playBtn');
-  pauseBtn.mousePressed(changeButton);
-  pauseBtn.hide();
-
-  // //Play Button
-  // playBtn = createImg('play-button.png');
-  // playBtn.style('width', '100px');
-  // playBtn.style('height', '100px');
-  // playBtn.style('font-size', '30px');
-  // playBtn.position(300, 600);
-  // playBtn.mousePressed(playKaraoke);
-  // playBtn.hide();
-
-  //Reset Button
-  resetBtn = createImg('reset.png', 'Reset Button');
-  resetBtn.style('width', '100px');
-  resetBtn.style('height', '100px');
-  resetBtn.position(width/2 -200, 600);
-  resetBtn.mousePressed(resetKaraoke);
-  resetBtn.hide();
 }
 
 function preload(){
   song = loadSound('justin-bieber_baby.mp3');
   rawLyrics = loadStrings("baby_lyrics.txt");
-  play = loadImage("play-button.png");
-  pause = loadImage("pause-button.png");
-  reset = loadImage("reset.png");
-
-  currentButton = loadImage("pause-button.png");
 }
 
 function draw() {
@@ -107,7 +64,6 @@ function start(){
     textFont('Courier New');
     textStyle(ITALIC);
     textSize(24);
-    fill(0);
     text("Click 'Start Karaoke' to begin", width/2 - 200 , height/2 + 20);
   }
 
@@ -116,13 +72,6 @@ function start(){
   }
   else {
     btn.hide();
-  }
-}
-
-function mousePressed(){
-  if (mouseX > btn.x && mouseX < btn.x + btn.width && 
-    mouseY > btn.y && mouseY < btn.y + btn.height){
-    btnvisi = false;
   }
 }
 
@@ -138,11 +87,11 @@ function lyricDisplay(){
 
   for (let entry of lyrics){
     if (time >= entry.timeStart && time <= entry.timeStop){
-      text(entry.lyric, width/2 - 500, height/2);
-      textSize(36);
+      textSize(16);
       fill(255);
       stroke(0);
-      strokeWeight(0);
+      strokeWeight(4);
+      text(entry.lyric, width/2 - 350, height/2);
       break;
     }
   }
