@@ -153,7 +153,7 @@ function lyricDisplay(){
 
   for (let entry of lyrics){
     if (time >= entry.timeStart && time <= entry.timeStop){
-      progress = (time - entry.timeStart) / (entry.timeStop - entry.timeStart);
+      progress = (time - entry.timeStart) / (1 + entry.timeStart - entry.timeStop);
       w = textWidth(entry.lyric); //define at top
       highlightWidth = w * progress;
       
@@ -161,10 +161,8 @@ function lyricDisplay(){
       cx = width/2;
       cy = height/2;
       h = 36 *1.2;
-      leftEdge = cx - w/2;
-      upEdge = cy - h/2;
       fill('black');
-      rect(leftEdge, upEdge, highlightWidth, h);
+      rect(cx, cy, highlightWidth, h);
 
       textAlign(CENTER, CENTER);
       fill(255);
