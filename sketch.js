@@ -41,6 +41,23 @@ function setup() {
   buttonfunction();
 }
 
+class KaraokeLyrics {
+  constructor(){
+
+  }
+}
+
+function parseLyric(){
+  for (let line of rawLyrics){
+    let parts = line.split("|");
+    lyrics.push({
+      timeStart: Number(parts[0]),
+      timeStop: Number(parts[1]),
+      lyric: parts[2]
+    });
+  }
+}
+
 function buttonfunction(){
 
   //Start Button
@@ -153,7 +170,7 @@ function lyricDisplay(){
 
   for (let entry of lyrics){
     if (time >= entry.timeStart && time <= entry.timeStop){
-      progress = (time - entry.timeStart) / (1 + entry.timeStart - entry.timeStop);
+      progress = (time - entry.timeStart) / (entry.timeStart - entry.timeStop);
       w = textWidth(entry.lyric); //define at top
       highlightWidth = w * progress;
       
@@ -172,16 +189,5 @@ function lyricDisplay(){
 
       break;
     }
-  }
-}
-
-function parseLyric(){
-  for (let line of rawLyrics){
-    let parts = line.split("|");
-    lyrics.push({
-      timeStart: Number(parts[0]),
-      timeStop: Number(parts[1]),
-      lyric: parts[2]
-    });
   }
 }
