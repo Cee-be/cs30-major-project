@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>WebSocket Audio Debug</h2>
+  <p id="status">Connecting...</p>
+  <pre id="data"></pre>
+
+  <script>
+    const ESP32_IP = "10.145.46.101";
+    const ws = new WebSocket(`ws://${ESP32_IP}:81/ws`);
+    ws.binaryType = "arraybuffer";
+
+    ws.onopen = () => document.getElementById("status").innerText = "Connected!";
+    ws.onclose = () => document.getElementById("status").innerText = "Closed!";
+
+    ws.onmessage = (event) => {
+      const arr = new Int32Array(event.data);
+      document.getElementById("data").innerText = arr.slice(0,10).join(", ");
+    }
+  </script>
+</body>
+</html>

@@ -31,6 +31,7 @@ let analyzer;
 let btn;
 let started = false;
 let btnvisi = true;
+let layer;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -38,6 +39,7 @@ function setup() {
 
   karaoke = new KaraokeLyrics();
   karaoke.load(rawLyrics);
+  cutOut();
   buttonfunction();
 }
 
@@ -49,6 +51,13 @@ function preload(){
   reset = loadImage("reset.png");
 
   currentButton = loadImage("pause-button.png");
+}
+
+function cutOut(){
+  layer = createGraphics(windowWidth, windowHeight);
+  layer.textAlign(LEFT, CENTER);
+  layer.textSize(36);
+  layer.strokeWeight(3);
 }
 
 class KaraokeLyrics {
@@ -85,23 +94,46 @@ class KaraokeLyrics {
     this.progress = (currentTime - this.lyric.timeStart) / 
                     (this.lyric.timeStop - this.lyric.timeStart);
     this.w = textWidth(this.lyric.lyric); 
-    this.highlightWidth = this.w * this.progress;
+    let highlightWidth = this.w * this.progress;
 
-    //design for the bar
-    textSize(36);
-    let h = 36 *1.2;
+    let h = 36 * 1.2;
     let cx = width/2 - this.w/2; //22closer to words
     //let cl = cx - w/2; //start from left
     let cy = height/2 - h/2;//-20 tomove up
-    fill('black');
-    rect(cx + 22, cy - 20, abs(this.highlightWidth), h); //hW might be neg
 
-    //lyric text
-    textAlign(LEFT, CENTER);
-    fill(255);
-    stroke(0);
-    strokeWeight(3);
-    text(this.lyric.lyric, cx, cy);
+    //cut out
+    layer.clear();
+
+    layer.noStroke();
+    layer.fill('grey');
+    layer.rect(cx + 22, cy - 20 , highlightWidth, h);
+    
+    layer.erase();
+    
+    layer.noErase();
+
+    layer.fill(255);
+    layer.stroke(0);
+    layer.strokeWeight(3);
+    layer.text(this.lyric.lyric, cx, cy);
+
+    image(layer, 0, 0);
+
+    // //design for the bar
+    // textSize(36);
+    // let h = 36 *1.2;
+    // let cx = width/2 - this.w/2; //22closer to words
+    // //let cl = cx - w/2; //start from left
+    // let cy = height/2 - h/2;//-20 tomove up
+    // fill('black');
+    // rect(cx + 22, cy - 20, abs(this.highlightWidth), h); //hW might be neg
+
+    // //lyric text
+    // textAlign(LEFT, CENTER);
+    // fill(255);
+    // stroke(0);
+    // strokeWeight(3);
+    // text(this.lyric.lyric, cx, cy);
   }
 }
 
