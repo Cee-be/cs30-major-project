@@ -32,6 +32,10 @@ let btn;
 let started = false;
 let btnvisi = true;
 let layer;
+let p;
+let image_x;
+let image_y;
+let frame = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -41,6 +45,8 @@ function setup() {
   karaoke.load(rawLyrics);
   cutOut();
   buttonfunction();
+
+  logo();
 }
 
 function preload(){
@@ -49,6 +55,7 @@ function preload(){
   play = loadImage("play-button.png");
   pause = loadImage("pause-button.png");
   reset = loadImage("reset.png");
+  logoimage = loadImage("perfect pitch.png");
 
   currentButton = loadImage("pause-button.png");
 }
@@ -58,6 +65,30 @@ function cutOut(){
   layer.textAlign(LEFT, CENTER);
   layer.textSize(36);
   layer.strokeWeight(3);
+}
+
+let delay_animation = 50;
+const create_gif = true;
+const image_width = 300;
+
+function logo(){
+  
+
+  p = createP(`<img src="perfect pitch.png" width="${image_width}">`);
+  p.style('z-index', '-9999');
+  position_p();
+
+  if (create_gif){
+    FPS = 50;
+    frameRate(FPS);
+    createLoop({duration:3, gif:true});
+  }
+}
+
+function position_p(){
+  image_x = random(-20, 20);
+  image_y = random(-20, 20);
+  p.position(image_x, image_y);
 }
 
 class KaraokeLyrics {
@@ -176,6 +207,16 @@ function buttonfunction(){
 function draw() {
   background(220);
   start();
+  logoDraw();
+}
+
+function logoDraw(){
+  let now = millis();
+  if (frame + delay_animation >= now){
+    return;
+  }
+
+  position_p();
 }
 
 function start(){
