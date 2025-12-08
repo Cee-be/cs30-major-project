@@ -54,6 +54,7 @@ function setup() {
 
   karaoke = new KaraokeLyrics();
   karaoke.load(rawLyrics);
+
   cutOut();
   buttonfunction();
 }
@@ -159,6 +160,15 @@ class KaraokeLyrics {
   }
 }
 
+function lyricScroll(){
+  let yStart = 0;
+
+  for (let y = yStart; y < height; y += 28){
+    fill(255, y/2 +  55, 100);
+    text(this.lyric.lyric, cx, cy);
+  }
+  yStart--;
+}
 
 function buttonfunction(){
 
@@ -203,6 +213,13 @@ function draw() {
   background('#C9C6D7');
   start();
   logoDraw();
+
+  splitScreen();
+}
+
+function splitScreen(){
+  addClass(column_right);
+  addClass(column_left);
 }
 
 function logoDraw(){
@@ -271,6 +288,8 @@ function resetKaraoke(){
   pauseBtn.hide();
   playBtn.hide();
   resetBtn.hide();
+
+  logoVisible = true;
 }
 
 //when pause is pressed
