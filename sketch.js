@@ -3,6 +3,9 @@
 // Date
 //
 // Extra for Experts:
+// https://editor.p5js.org/dansakamoto/sketches/H1ICcXXtm
+//https://prismic.io/blog/css-button-animations
+
 // - describe what you did to take this project "above and beyond"
 
 
@@ -33,9 +36,17 @@ let started = false;
 let btnvisi = true;
 let layer;
 let p;
-let image_x;
-let image_y;
+let logoX;
+let logoY;
+let jiggleEndTime;
+let jiggleAmount = 4;
+let logoVisible = true;
 let frame = 0;
+let logoimage;
+let theta = 0;
+let maxScale = 0.10;
+let baseScale = 1;
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -45,8 +56,6 @@ function setup() {
   karaoke.load(rawLyrics);
   cutOut();
   buttonfunction();
-
-  logo();
 }
 
 function preload(){
@@ -68,28 +77,10 @@ function cutOut(){
 }
 
 let delay_animation = 50;
+let lastMoveTime = 0;
 const create_gif = true;
 const image_width = 300;
 
-function logo(){
-  
-
-  p = createP(`<img src="perfect pitch.png" width="${image_width}">`);
-  p.style('z-index', '-9999');
-  position_p();
-
-  if (create_gif){
-    FPS = 50;
-    frameRate(FPS);
-    createLoop({duration:3, gif:true});
-  }
-}
-
-function position_p(){
-  image_x = random(-20, 20);
-  image_y = random(-20, 20);
-  p.position(image_x, image_y);
-}
 
 class KaraokeLyrics {
   constructor(){
@@ -173,10 +164,14 @@ function buttonfunction(){
 
   //Start Button
   btn = createButton("Start Karaoke");
-  btn.style('width', '750px');
-  btn.style('height', '80px');
+  btn.addClass("glow");
+  btn.addClass("neon-btn");
+  btn.style('width', '300px');
+  btn.style('height', '50px');
   btn.style('font-size', '30px');
-  btn.position(width/2 - 350, height/2 - 100);
+  btn.style('background-color', '#0294CF');
+  btn.style('color', '#F8B1EA');
+  btn.position(width/2 - 150, height/2 + 50);
   btn.mousePressed(startKaraoke);
 
   //Pause Button
@@ -205,18 +200,25 @@ function buttonfunction(){
 }
 
 function draw() {
-  background(220);
+  background('#C9C6D7');
   start();
   logoDraw();
 }
 
 function logoDraw(){
-  let now = millis();
-  if (frame + delay_animation >= now){
+  if (logoVisible === false){
     return;
   }
 
-  position_p();
+  //Pulsing
+  let scaleAmount = baseScale + sin(theta) * maxScale;
+  let w = logoimage.width * scaleAmount;
+  let h = logoimage.height * scaleAmount;
+
+  imageMode(CENTER);
+  image(logoimage, width/2, height/2 - 100, w, h);
+
+  theta += 0.05;
 }
 
 function start(){
@@ -228,10 +230,11 @@ function start(){
     textFont('Courier New');
     textStyle(ITALIC);
     textSize(24);
+
     fill(0);
     textAlign(CENTER, CENTER);
     strokeWeight(0);
-    text("Click 'Start Karaoke' to begin", width/2 , height/2);
+    text("Click 'Start Karaoke' to begin", width/2 , height/2 + 140);
   }
 
   //hide and show of Srtbtn
@@ -251,6 +254,7 @@ function startKaraoke(){
   started = true;
 
   btnvisi = false;
+  logoVisible = false;
 
   pauseBtn.show();
   playBtn.hide();

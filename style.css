@@ -1,3 +1,5 @@
+/* https://www.w3schools.com/howto/howto_css_glowing_text.asp */
+
 html, body {
   margin: 0;
   padding: 0;
@@ -6,3 +8,77 @@ html, body {
 canvas {
   display: block;
 }
+
+.glow {
+  font-size: 80px;
+  color: #fff;
+  text-align: center;
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 
+    0 0 10px #fff,
+    0 0 20px #fff, 
+    0 0 30px #e60073, 
+    0 0 40px #e60073, 
+    0 0 50px #e60073, 
+    0 0 60px #e60073, 
+    0 0 70px #e60073;
+  }
+  to {
+    text-shadow: 
+    0 0 20px #fff, 
+    0 0 30px #ff4da6, 
+    0 0 40px #ff4da6, 
+    0 0 50px #ff4da6, 
+    0 0 60px #ff4da6, 
+    0 0 70px #ff4da6, 
+    0 0 80px #ff4da6;
+  }
+}
+
+.neon-btn {
+  position: relative;
+  font-size: 1.5rem;
+  font-weight: 750;
+  color: #fff;
+  background: #000;
+  border: 2px solid #0ff;
+  cursor: pointer;
+  overflow: visible;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
+  border-radius: 12px;
+  
+}
+
+.neon-btn::before,
+.neon-btn::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border: 2px solid #0ff;
+  border-radius: inherit;
+  animation: pulseOut 2s ease-out infinite;
+  opacity: 0;
+}
+
+.neon-btn::after {
+  animation-delay: 1s;
+}
+
+@keyframes pulseOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
