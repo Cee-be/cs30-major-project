@@ -48,17 +48,6 @@ let maxScale = 0.10;
 let baseScale = 1;
 
 
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-  rectMode(CORNER);
-
-  karaoke = new KaraokeLyrics();
-  karaoke.load(rawLyrics);
-
-  cutOut();
-  buttonfunction();
-}
-
 function preload(){
   currentSong = loadSound('justin-bieber_baby.mp3');
   rawLyrics = loadStrings("baby_lyrics.txt");
@@ -68,6 +57,17 @@ function preload(){
   logoimage = loadImage("perfect pitch.png");
 
   currentButton = loadImage("pause-button.png");
+}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  rectMode(CORNER);
+
+  karaoke = new KaraokeLyrics();
+  karaoke.load(rawLyrics);
+
+  cutOut();
+  buttonfunction();
 }
 
 function cutOut(){
@@ -214,12 +214,12 @@ function draw() {
   start();
   logoDraw();
 
-  splitScreen();
-}
-
-function splitScreen(){
-  addClass(column_right);
-  addClass(column_left);
+//   splitScreen();
+// }
+//   addClass(column_right);
+//   a
+// function splitScreen(){
+// ddClass(column_left);
 }
 
 function logoDraw(){
@@ -304,5 +304,4 @@ function togglePause(){
     pauseBtn.show();
     playBtn.hide();
   }
-}
-
+};
