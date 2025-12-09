@@ -1,50 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>ESP32 I2S WebSocket Audio Player</title>
-  <script src="https://unpkg.com/pcm-player"></script>
-  <style>
-    body { font-family: Arial; padding: 20px; }
-    #status { font-size: 20px; margin-bottom: 10px; }
-  </style>
-</head>
-
 <body>
-  <h2>ESP32 → WebSocket → Browser Audio</h2>
+  <h2>ESP32 WebSocket Test</h2>
+  <p id="status">Connecting...</p>
+  <p id="count">Packets received: 0</p>
 
-  <p id="status">Connecting to ESP32...</p>
+<script>
+  const ws = new WebSocket("ws://10.216.192.101:5500/ws");
+  ws.binaryType = "arraybuffer";
 
-  <script>
-    // 🔵 CHANGE THIS TO YOUR ESP32's IP ADDRESS
-    const ESP32_IP = "192.168.35.101";
+  let packets = 0;
 
-    const ws = new WebSocket(`ws://${ESP32_IP}:81/ws`);
-    ws.binaryType = "arraybuffer";
+  ws.onopen = () => {
+    document.getElementById("status").innerText = "Connected!";
+  };
 
-    // 🔊 PCM Player settings — must match ESP32 I2S config
-    const player = new PCMPlayer({
-      encoding: '32bitInt',   // ESP32 uses 32-bit samples
-      channels: 1,            // INMP441 is mono
-      sampleRate: 16000,      // you set 16000 in I2S
-      flushingTime: 30
-    });
+  ws.onclose = () => {
+    document.getElementById("status").innerText = "Disconnected!";
+  };
 
-    ws.onopen = () => {
-      document.getElementById("status").innerText = "Connected!";
-      console.log("WebSocket connected.");
-    };
-
-    ws.onclose = () => {
-      document.getElementById("status").innerText = "Disconnected!";
-      console.log("WebSocket disconnected.");
-    };
-
-    ws.onmessage = (event) => {
-      const pcm32 = new Int32Array(event.data);
-      player.feed(pcm32);
-    };
-  </script>
-
+  ws.onmessage = (event) => {
+    packets++;
+    document.getElementById("count").innerText =
+      "Packets received: " + packets;
+  };
+</script>
 </body>
 </html>
