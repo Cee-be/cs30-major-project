@@ -47,17 +47,6 @@ let theta = 0;
 let maxScale = 0.10;
 let baseScale = 1;
 
-
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-  rectMode(CORNER);
-
-  karaoke = new KaraokeLyrics();
-
-  cutOut();
-  buttonfunction();
-}
-
 function preload(){
   currentSong = loadSound('justin-bieber_baby.mp3');
   rawLyrics = loadStrings("baby_lyrics.txt");
@@ -67,8 +56,6 @@ function preload(){
   logoimage = loadImage("perfect pitch.png");
 
   currentButton = loadImage("pause-button.png");
-
-  karaoke.load(rawLyrics);
 }
 
 function setup() {
