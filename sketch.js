@@ -71,6 +71,17 @@ function preload(){
   karaoke.load(rawLyrics);
 }
 
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  rectMode(CORNER);
+
+  karaoke = new KaraokeLyrics();
+  karaoke.load(rawLyrics);
+
+  cutOut();
+  buttonfunction();
+}
+
 function cutOut(){
   layer = createGraphics(windowWidth, windowHeight);
   layer.textAlign(LEFT, CENTER);
@@ -215,12 +226,12 @@ function draw() {
   start();
   logoDraw();
 
-  splitScreen();
-}
-
-function splitScreen(){
-  addClass(column_right);
-  addClass(column_left);
+//   splitScreen();
+// }
+//   addClass(column_right);
+//   a
+// function splitScreen(){
+// ddClass(column_left);
 }
 
 function logoDraw(){
@@ -305,5 +316,4 @@ function togglePause(){
     pauseBtn.show();
     playBtn.hide();
   }
-}
-
+};
