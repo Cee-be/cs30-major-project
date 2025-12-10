@@ -53,7 +53,6 @@ function setup() {
   rectMode(CORNER);
 
   karaoke = new KaraokeLyrics();
-  karaoke.load(rawLyrics);
 
   cutOut();
   buttonfunction();
@@ -68,6 +67,8 @@ function preload(){
   logoimage = loadImage("perfect pitch.png");
 
   currentButton = loadImage("pause-button.png");
+
+  karaoke.load(rawLyrics);
 }
 
 function cutOut(){
