@@ -42,6 +42,7 @@ let logoY;
 let jiggleEndTime;
 let jiggleAmount = 4;
 let logoVisible = true;
+let scrollLyric = true;
 let frame = 0;
 let logoimage;
 let theta = 0;
@@ -74,7 +75,7 @@ function setup() {
   karaoke = new KaraokeLyrics();
   karaoke.load(rawLyrics);
 
-  document.getElementById("layout").classList.add("hidden");
+  document.getElementById("layout").classList.add("hidden").classList.add("bottomPanel");
 }
 
 //https://editor.p5js.org/aferriss/sketches/BJnHtrpnz
@@ -132,36 +133,6 @@ class KaraokeLyrics {
     this.w = textWidth(this.lyric.lyric); 
     let highlightWidth = this.w * this.progress;
 
-
-    // //cut out
-    // image(layer, 0, 0);
-    // layer.clear();
-
-    // layer.noStroke();
-    // layer.fill('grey');
-    // layer.rect(cx + 22, cy - 20 , highlightWidth, h);
-    
-    // layer.erase();
-    
-    // layer.noErase();
-
-    // layer.fill(255);
-    // layer.stroke(0);
-    // layer.strokeWeight(3);
-    // layer.text(this.lyric.lyric, cx, cy);
-
-    //design for the bar
-    textSize(36);
-    let h = 36 *1.2;
-    let cx = width/2 - this.w/2; //22closer to words
-    //let cl = cx - w/2; //start from left
-    let cy = height/2 - h/2;//-20 tomove up
-    fill('black');
-    rect(cx + 22, cy - 20, abs(this.highlightWidth), h); //hW might be neg
-
-    let textX = width/2;
-    let textY = height * 0.8;
-
     //lyric text
     textAlign(LEFT, CENTER);
     fill(0);
@@ -179,11 +150,24 @@ class KaraokeLyrics {
       //nextLine += scrollSpace;
       lastLyric = this.lyric.lyric;
     }
+
+    // //design for the bar
+    // textSize(36);
+    // let h = 36 *1.2;
+    // let cx = width/2 - this.w/2; //22closer to words
+    // //let cl = cx - w/2; //start from left
+    // let cy = height/2 - h/2;//-20 tomove up
+    // fill('black');
+    // rect(cx + 22, line.y, abs(highlightWidth), h); //hW might be neg
   }
 }
 
 //Scrolling lyrics effect
 function lyricScroll(){
+  if (scrollLyric === true){
+    return;
+  }
+
   fill(0);
   textAlign(CENTER, CENTER);
   textSize(32);
@@ -311,6 +295,7 @@ function startKaraoke(){
 
   btnvisi = false;
   logoVisible = false;
+  scrollLyric = false;
 
   pauseBtn.show();
   playBtn.hide();
@@ -347,6 +332,7 @@ function resetKaraoke(){
 function togglePause(){
   if (currentSong.isPlaying()){
     currentSong.pause();
+    scrollLyric = false;
     pauseBtn.hide();
     playBtn.show();
   }
