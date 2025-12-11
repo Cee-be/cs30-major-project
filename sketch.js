@@ -1,10 +1,11 @@
-// Major project - Pitch Perfect
+// Major project - Perfect Pitch
 // Ceberta Adum
 // Date
 //
 // Extra for Experts:
 // https://editor.p5js.org/dansakamoto/sketches/H1ICcXXtm
 //https://prismic.io/blog/css-button-animations
+//https://editor.p5js.org/codingtrain/sketches/1UggvR8ix
 
 // - describe what you did to take this project "above and beyond"
 
@@ -46,6 +47,12 @@ let logoimage;
 let theta = 0;
 let maxScale = 0.10;
 let baseScale = 1;
+let karaoke;
+let scrollY = 0;
+let scrollingLyrics = [];
+let lastLyric = '';
+let lineSpace = 2;
+let scrollSpeed = 1;
 
 function preload(){
   currentSong = loadSound('justin-bieber_baby.mp3');
@@ -54,20 +61,26 @@ function preload(){
   pause = loadImage("pause-button.png");
   reset = loadImage("reset.png");
   logoimage = loadImage("perfect pitch.png");
-
   currentButton = loadImage("pause-button.png");
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  canvas = createCanvas(windowWidth, windowHeight);
   rectMode(CORNER);
+
+  cutOut();
+  buttonfunction();
 
   karaoke = new KaraokeLyrics();
   karaoke.load(rawLyrics);
 
-  cutOut();
-  buttonfunction();
+  document.getElementById("layout").classList.add("hidden");
 }
+
+//https://editor.p5js.org/aferriss/sketches/BJnHtrpnz
+//adding class
+
+
 
 function cutOut(){
   layer = createGraphics(windowWidth, windowHeight);
@@ -113,60 +126,81 @@ class KaraokeLyrics {
     if (!this.lyric) {
       return;
     }
+    
     this.progress = (currentTime - this.lyric.timeStart) / 
                     (this.lyric.timeStop - this.lyric.timeStart);
     this.w = textWidth(this.lyric.lyric); 
     let highlightWidth = this.w * this.progress;
 
-    let h = 36 * 1.2;
+
+    // //cut out
+    // image(layer, 0, 0);
+    // layer.clear();
+
+    // layer.noStroke();
+    // layer.fill('grey');
+    // layer.rect(cx + 22, cy - 20 , highlightWidth, h);
+    
+    // layer.erase();
+    
+    // layer.noErase();
+
+    // layer.fill(255);
+    // layer.stroke(0);
+    // layer.strokeWeight(3);
+    // layer.text(this.lyric.lyric, cx, cy);
+
+    //design for the bar
+    textSize(36);
+    let h = 36 *1.2;
     let cx = width/2 - this.w/2; //22closer to words
     //let cl = cx - w/2; //start from left
     let cy = height/2 - h/2;//-20 tomove up
+    fill('black');
+    rect(cx + 22, cy - 20, abs(this.highlightWidth), h); //hW might be neg
 
-    //cut out
-    layer.clear();
+    let textX = width/2;
+    let textY = height * 0.8;
 
-    layer.noStroke();
-    layer.fill('grey');
-    layer.rect(cx + 22, cy - 20 , highlightWidth, h);
-    
-    layer.erase();
-    
-    layer.noErase();
+    //lyric text
+    textAlign(LEFT, CENTER);
+    fill(0);
+    stroke(255);
+    strokeWeight(3);
+    //text(this.lyric.lyric, cx, cy);
+    //text(this.lyric.lyric, textX, textY);
 
-    layer.fill(255);
-    layer.stroke(0);
-    layer.strokeWeight(3);
-    layer.text(this.lyric.lyric, cx, cy);
+    if (this.lyric.lyric !== lastLyric){
+      scrollingLyrics.push({
+        text: this.lyric.lyric,
+        y: height + scrollingLyrics.length * lineSpace
+      });
 
-    image(layer, 0, 0);
-
-    // //design for the bar
-    // textSize(36);
-    // let h = 36 *1.2;
-    // let cx = width/2 - this.w/2; //22closer to words
-    // //let cl = cx - w/2; //start from left
-    // let cy = height/2 - h/2;//-20 tomove up
-    // fill('black');
-    // rect(cx + 22, cy - 20, abs(this.highlightWidth), h); //hW might be neg
-
-    // //lyric text
-    // textAlign(LEFT, CENTER);
-    // fill(255);
-    // stroke(0);
-    // strokeWeight(3);
-    // text(this.lyric.lyric, cx, cy);
+      //nextLine += scrollSpace;
+      lastLyric = this.lyric.lyric;
+    }
   }
 }
 
+//Scrolling lyrics effect
 function lyricScroll(){
-  let yStart = 0;
+  fill(0);
+  textAlign(CENTER, CENTER);
+  textSize(32);
 
-  for (let y = yStart; y < height; y += 28){
-    fill(255, y/2 +  55, 100);
-    text(this.lyric.lyric, cx, cy);
+  for (let i = 0; i < scrollingLyrics.length; i++){
+    let line = scrollingLyrics[i];
+    text(line.text, width/2, line.y);
+
+    line.y -= scrollSpeed;
   }
-  yStart--;
+
+  //remove lyrics out of screen
+  for (let i = scrollingLyrics.length - 1; i >= 0; i--){
+    if (scrollingLyrics[i].y < -50){
+      scrollingLyrics.splice(i, 1);
+    }
+  }
 }
 
 function buttonfunction(){
@@ -213,12 +247,8 @@ function draw() {
   start();
   logoDraw();
 
-//   splitScreen();
-// }
-//   addClass(column_right);
-//   a
-// function splitScreen(){
-// ddClass(column_left);
+  lyricScroll();
+  //showSplit();
 }
 
 function logoDraw(){
@@ -240,7 +270,10 @@ function logoDraw(){
 function start(){
   //button press start
   if (started){
+    textSize(36);
+    textFont("Courier New");
     karaoke.display(currentSong.currentTime());
+    lyricScroll();
   }
   else{
     textFont('Courier New');
@@ -264,6 +297,13 @@ function start(){
 
 // What happens when msc srts
 function startKaraoke(){
+  canvas.parent("rightPanel");
+  resizeCanvas(windowWidth * 0.78, windowHeight);
+  
+  document.getElementById("layout").classList.remove("hidden");
+  btn.hide();
+  showSongList();
+
   analyzer = new p5.Amplitude(0, 5);
   analyzer.setInput(currentSong);
   currentSong.loop();
@@ -275,6 +315,18 @@ function startKaraoke(){
   pauseBtn.show();
   playBtn.hide();
   resetBtn.show();
+}
+
+function showSongList(){
+  let left = document.getElementById("leftPanel");
+
+  left.innerHTML = `
+    <h2>Song List</h2>
+    <ul class = "songs">
+      <li>Baby - Justin Bieber</li>
+      <li>I am still standing - Sing</li>
+    </ul>
+  `;
 }
 
 //reset button actio

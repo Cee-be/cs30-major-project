@@ -7,7 +7,10 @@ html, body {
 }
 
 canvas {
-  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  /*display: block;*/
 }
 
 .glow {
@@ -83,27 +86,23 @@ canvas {
   }
 }
 
-
-*{
-  box-sizing: border-box;
+.hidden{
+  display: none !important;
 }
 
-.column_left {
-  float: left;
-  width: 70%;
+#layout{
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+#leftPanel {
+  width: 22%;
+  background: #f4f4f4;
   padding: 20px;
-  height: 300px;
 }
 
-.column_right {
-  float: left;
-  width: 30%;
-  padding: 20px;
-  height: 300px;
-}
-
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
+#rightPanel {
+  width: 78%;
+  position: relative;
 }
