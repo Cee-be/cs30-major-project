@@ -67,7 +67,7 @@ function preload(){
 
 function setup() {
   canvas = createCanvas(windowWidth, windowHeight);
-  rectMode(CORNER);
+  rectMode(CENTER);
 
   cutOut();
   buttonfunction();
@@ -75,7 +75,7 @@ function setup() {
   karaoke = new KaraokeLyrics();
   karaoke.load(rawLyrics);
 
-  document.getElementById("layout").classList.add("hidden").classList.add("bottomPanel");
+  document.getElementById("layout").classList.add("hidden");
 }
 
 //https://editor.p5js.org/aferriss/sketches/BJnHtrpnz
@@ -306,13 +306,14 @@ function showSongList(){
   let left = document.getElementById("leftPanel");
 
   left.innerHTML = `
-    <h2>Song List</h2>
+    <h1>Song List</h1>
     <ul class = "songs">
-      <li>Baby - Justin Bieber</li>
-      <li>I am still standing - Sing</li>
+      <h3>Baby - Justin Bieber<h3>
+      <h3>I am still standing - Sing<h3>
     </ul>
   `;
 }
+
 
 //reset button actio
 function resetKaraoke(){
@@ -325,7 +326,9 @@ function resetKaraoke(){
   playBtn.hide();
   resetBtn.hide();
 
-  logoVisible = true;
+  //logoVisible = true;
+
+  document.getElementById("layout").classList.add("hidden");
 }
 
 //when pause is pressed

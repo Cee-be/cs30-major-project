@@ -98,19 +98,12 @@ canvas {
 
 #leftPanel {
   width: 22%;
-  background: #F4218A;
+  background: #F279BE;
   padding: 20px;
 }
 
 #rightPanel {
   width: 78%;
   position: relative;
-  background: #FDB4E2;
-}
-
-.bottomPanel{
-  width: 78%;
-  height: 22%;
-  position: relative;
-  background: #f4f4f4;
+  background: #03ADDE;
 }
