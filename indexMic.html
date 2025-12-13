@@ -1,29 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ESP32 Mic Level</title>
+  <style>
+    body { background:#111; color:#0ff; font-family:monospace; text-align:center; }
+    #bar { width:40px; height:0; background:#0ff; margin:40px auto; transition:height 0.05s; }
+  </style>
+</head>
 <body>
-  <h2>ESP32 WebSocket Test</h2>
+  <h2>ESP32 WebSocket Mic Level</h2>
   <p id="status">Connecting...</p>
-  <p id="count">Packets received: 0</p>
+  <div id="bar"></div>
 
-<script>
-  const ws = new WebSocket("ws://10.216.192.101:81/ws");
+  <!-- <script>
+  const ws = new WebSocket("ws://10.231.242.101:5500");
   ws.binaryType = "arraybuffer";
 
-  let packets = 0;
-
-  ws.onopen = () => {
-    document.getElementById("status").innerText = "Connected!";
+  ws.onmessage = e => {
+    const level = new Int16Array(e.data)[0];
+    bar.style.height = Math.min(level / 5, 300) + "px";
   };
+</script> -->
 
-  ws.onclose = () => {
-    document.getElementById("status").innerText = "Disconnected!";
-  };
 
-  ws.onmessage = (event) => {
-    packets++;
-    document.getElementById("count").innerText =
-      "Packets received: " + packets;
-  };
-</script>
+  <script>
+    const ESP32_IP = "10.231.242.101";
+    const status = document.getElementById("status");
+    const bar = document.getElementById("bar");
+
+    let ws;
+
+    function connect() {
+      ws = new WebSocket(`ws://${ESP32_IP}:5500/ws`);
+      ws.binaryType = "arraybuffer";
+
+      ws.onopen = () => {
+        status.innerText = "Connected";
+        console.log("WS open");
+      };
+
+      ws.onclose = (e) => {
+        status.innerText = `Disconnected (code ${e.code})`;
+        console.log("WS close:", e.code, e.reason);
+        // auto reconnect
+        setTimeout(connect, 1000);
+      };
+
+      ws.onerror = (e) => {
+        console.log("WS error:", e);
+      };
+
+      ws.onmessage = (event) => {
+        const level = new Int16Array(event.data)[0];
+        bar.style.height = Math.min(level / 5, 300) + "px";
+      };
+    }
+
+    connect();
+  </script>
 </body>
 </html>
