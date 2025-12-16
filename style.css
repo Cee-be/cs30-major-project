@@ -4,6 +4,10 @@
 html, body {
   margin: 0;
   padding: 0;
+  background:#111; 
+  color:#0ff; 
+  font-family:monospace; 
+  text-align:center; 
 }
 
 canvas {

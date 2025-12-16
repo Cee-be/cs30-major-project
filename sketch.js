@@ -23,6 +23,7 @@
 //   }
 // ];
 
+//
 let currentSong;
 let rawLyrics;
 let yStart = 0;
@@ -77,11 +78,6 @@ function setup() {
 
   document.getElementById("layout").classList.add("hidden");
 }
-
-//https://editor.p5js.org/aferriss/sketches/BJnHtrpnz
-//adding class
-
-
 
 function cutOut(){
   layer = createGraphics(windowWidth, windowHeight);
@@ -345,3 +341,22 @@ function togglePause(){
     playBtn.hide();
   }
 };
+
+
+// // double checking the normalization
+// let min = Infinity;
+// let max = -Infinity;
+
+// for (let i = 0; i < floatSamples.length; i++) {
+//   if (floatSamples[i] < min) min = floatSamples[i];
+//   if (floatSamples[i] > max) max = floatSamples[i];
+// }
+
+// console.log(
+//   "Float samples:",
+//   floatSamples.length,
+//   "Min:",
+//   min.toFixed(3),
+//   "Max:",
+//   max.toFixed(3)
+// );

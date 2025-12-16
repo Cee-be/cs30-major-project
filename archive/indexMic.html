@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ESP32 Mic Connection</title>
+</head>
+
+<body>
+  <h2>ESP32 WebSocket Mic Level</h2>
+  <p id="status">Connecting...</p>
+  <p id="pitch">---</p>
+
+<!-- p5 libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js"></script>
+
+<!-- p5 sketch (NOT a module) -->
+<script src="sketch.js"></script>
+
+<!-- pitch + websocket logic (IS a module) -->
+<script type="module" src="pitch.js"></script>
+
+</body>
+</html>
