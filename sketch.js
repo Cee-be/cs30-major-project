@@ -26,6 +26,8 @@
 //
 let currentSong;
 let rawLyrics;
+let currentSong01;
+let rawLyrics01;
 let yStart = 0;
 let time;
 let currentButton;
@@ -57,8 +59,12 @@ let lineSpace = 2;
 let scrollSpeed = 1;
 
 function preload(){
-  currentSong = loadSound('justin-bieber_baby.mp3');
-  rawLyrics = loadStrings("baby_lyrics.txt");
+  //currentSong = loadSound('justin-bieber_baby.mp3');
+  //rawLyrics = loadStrings("baby_lyrics.txt");
+
+  currentSong01 = loadSound('B99_I want it that way.mp3');
+  rawLyrics01 = loadStrings("B99_lyrics.txt");
+
   play = loadImage("play-button.png");
   pause = loadImage("pause-button.png");
   reset = loadImage("reset.png");
@@ -74,7 +80,9 @@ function setup() {
   buttonfunction();
 
   karaoke = new KaraokeLyrics();
-  karaoke.load(rawLyrics);
+  //karaoke.load(rawLyrics);
+
+  karaoke.load(rawLyrics01);
 
   document.getElementById("layout").classList.add("hidden");
 }
@@ -97,8 +105,8 @@ class KaraokeLyrics {
     this.lyrics = [];
   }
 
-  load(rawLyrics){
-    for (let line of rawLyrics){
+  load(rawLyrics01){ //remove 01
+    for (let line of rawLyrics01){ //remove 01
       this.parts = line.split("|");
 
       this.lyrics.push({
@@ -170,7 +178,7 @@ function lyricScroll(){
 
   for (let i = 0; i < scrollingLyrics.length; i++){
     let line = scrollingLyrics[i];
-    text(line.text, width/2, line.y);
+    text(line.text, width/2, line.y/1.7);
 
     line.y -= scrollSpeed;
   }
@@ -252,7 +260,7 @@ function start(){
   if (started){
     textSize(36);
     textFont("Courier New");
-    karaoke.display(currentSong.currentTime());
+    karaoke.display(currentSong01.currentTime()); //change back to CurrentSong
     lyricScroll();
   }
   else{
@@ -285,8 +293,8 @@ function startKaraoke(){
   showSongList();
 
   analyzer = new p5.Amplitude(0, 5);
-  analyzer.setInput(currentSong);
-  currentSong.loop();
+  analyzer.setInput(currentSong01);//remove 01
+  currentSong01.loop();//remove 01
   started = true;
 
   btnvisi = false;
@@ -304,8 +312,9 @@ function showSongList(){
   left.innerHTML = `
     <h1>Song List</h1>
     <ul class = "songs">
-      <h3>Baby - Justin Bieber<h3>
-      <h3>I am still standing - Sing<h3>
+      // <a href="#section2">Go to Section 2</a>
+      <a href="#section2">Baby - Justin Bieber</a>
+      <a href="#section2">I am still standing - Sing</a>
     </ul>
   `;
 }
@@ -313,8 +322,8 @@ function showSongList(){
 
 //reset button actio
 function resetKaraoke(){
-  currentSong.stop();
-  currentSong.jump(0);
+  currentSong01.stop(); //remove 01
+  currentSong01.jump(0); //remove 01
   started = false;
   btnvisi = true;
 
@@ -329,14 +338,14 @@ function resetKaraoke(){
 
 //when pause is pressed
 function togglePause(){
-  if (currentSong.isPlaying()){
-    currentSong.pause();
+  if (currentSong01.isPlaying()){ //remove 01
+    currentSong01.pause(); //remove 01
     scrollLyric = false;
     pauseBtn.hide();
     playBtn.show();
   }
   else{
-    currentSong.play();
+    currentSong01.play(); //remove 01
     pauseBtn.show();
     playBtn.hide();
   }
