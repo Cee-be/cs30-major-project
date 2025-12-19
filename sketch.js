@@ -59,8 +59,6 @@ let lineSpace = 2;
 let scrollSpeed = 1;
 
 function preload(){
-  currentSong = loadSound('justin-bieber_baby.mp3');
-  rawLyrics = loadStrings("baby_lyrics.txt");
   //currentSong = loadSound('justin-bieber_baby.mp3');
   //rawLyrics = loadStrings("baby_lyrics.txt");
 
@@ -72,6 +70,8 @@ function preload(){
   reset = loadImage("reset.png");
   logoimage = loadImage("perfect pitch.png");
   currentButton = loadImage("pause-button.png");
+
+  //B99_vid = load
 }
 
 function setup() {
@@ -82,7 +82,6 @@ function setup() {
   buttonfunction();
 
   karaoke = new KaraokeLyrics();
-  //karaoke.load(rawLyrics);
   //karaoke.load(rawLyrics);
 
   karaoke.load(rawLyrics01);
@@ -331,8 +330,6 @@ function showSongList(){
 
 //reset button actio
 function resetKaraoke(){
-  currentSong.stop();
-  currentSong.jump(0);
   currentSong01.stop(); //remove 01
   currentSong01.jump(0); //remove 01
   started = false;
