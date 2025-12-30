@@ -12,6 +12,9 @@ const detector = PitchDetector.forFloat32Array(SAMPLE_RATE);
 const ws = new WebSocket("ws://10.219.126.101:81");
 ws.binaryType = "arraybuffer";
 
+// ws.onopen = () => document.getElementById("status").innerText = "Connected!";
+// ws.onclose = () => document.getElementById("status").innerText = "Closed!";
+
 ws.onopen = () => {
   statusEl.innerText = "Connected";
   console.log("WebSocket connected");
