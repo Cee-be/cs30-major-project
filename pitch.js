@@ -9,7 +9,7 @@ const pitchEl = document.getElementById("pitch");
 
 const detector = PitchDetector.forFloat32Array(SAMPLE_RATE);
 
-const ws = new WebSocket("ws://10.231.242.101:5500");
+const ws = new WebSocket("ws://10.219.126.101:81");
 ws.binaryType = "arraybuffer";
 
 ws.onopen = () => {
