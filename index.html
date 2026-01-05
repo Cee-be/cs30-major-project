@@ -26,16 +26,28 @@
     <div id = "logoContainer"></div>
 
     <div id = "layout" class = "hidden">
-      <div id = "leftPanel"></div>
+
+      <div id = "leftPanel">
+        <h1>Song List</h1>
+
+        <button onclick="selectSong(0)">
+          I Want It That Way (B99)
+        </button>
+
+        <button onclick="selectSong(1)">
+          Baby - Justin Bieber
+        </button>
+
+      </div>
       <div id = "rightPanel"></div>
     </div>
 
     <div id="micStatus">
       <p id="status">Connecting...</p>
-      p id="pitch">---</p>
+      <p id="pitch">---</p>
     </div>
 
     <script src="sketch.js"></script>
-    <!-- <script type="module" src="pitch.js"></script> -->
+    <script type="module" src="pitch.js"></script> 
   </body>
 </html>

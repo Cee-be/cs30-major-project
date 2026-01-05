@@ -57,13 +57,30 @@ let scrollingLyrics = [];
 let lastLyric = '';
 let lineSpace = 2;
 let scrollSpeed = 1;
+let loadedSongs = [];
+let currentSongIndex = 0;
+
+const SONG_LIST = [
+  {
+    title: "I Want It That Way (B99)",
+    songFile: "B99_I want it that way.mp3",
+    lyricFile: "B99_lyrics.txt"
+  },
+  {
+    title: "Baby_Justin Beiber",
+    songFile: "justin-bieber_baby.mp3",
+    lyricFile: "baby_lyrics.txt"
+  },
+];
 
 function preload(){
-  //currentSong = loadSound('justin-bieber_baby.mp3');
-  //rawLyrics = loadStrings("baby_lyrics.txt");
-
-  currentSong01 = loadSound('B99_I want it that way.mp3');
-  rawLyrics01 = loadStrings("B99_lyrics.txt");
+  for (let song of SONG_LIST){
+    loadedSongs.push({
+      title: song.title,
+      sound: loadSound(song.songFile),
+      lyrics: loadStrings(song.lyricFile)
+    });
+  }
 
   play = loadImage("play-button.png");
   pause = loadImage("pause-button.png");
@@ -82,11 +99,33 @@ function setup() {
   buttonfunction();
 
   karaoke = new KaraokeLyrics();
-  //karaoke.load(rawLyrics);
-
-  karaoke.load(rawLyrics01);
+  loadSong(0);
 
   document.getElementById("layout").classList.add("hidden");
+  document.getElementById("leftPanel").classList.add("hidden");
+}
+
+function loadSong(index){
+  if (currentSong && currentSong.isPlaying()) {
+    currentSong.stop();
+  }
+
+  currentSongIndex = index;
+  currentSong = loadedSongs[index].sound;
+  rawLyrics = loadedSongs[index].lyrics;
+
+  //scrolling
+  scrollingLyrics = [];
+  lastLyric = "";
+
+  //karaoke data
+  karaoke = new KaraokeLyrics();
+  karaoke.load(rawLyrics);
+
+  //analyzer
+  if (analyzer){
+    analyzer.setInput(currentSong);
+  }
 }
 
 function cutOut(){
@@ -107,8 +146,8 @@ class KaraokeLyrics {
     this.lyrics = [];
   }
 
-  load(rawLyrics01){ //remove 01
-    for (let line of rawLyrics01){ //remove 01
+  load(rawLyrics){ 
+    for (let line of rawLyrics){ 
       this.parts = line.split("|");
 
       this.lyrics.push({
@@ -119,80 +158,119 @@ class KaraokeLyrics {
     }
   }
 
-  findCurrentLyric(currentTime){
-    for (let entry of this.lyrics){
-      if (currentTime >= entry.timeStart && currentTime <= entry.timeStop){
-        return entry;
+  findCurrentIndex(currentTime){
+    for (let i = 0; i < this.lyrics.length; i++){
+      let e = this.lyrics[i];
+      if (currentTime >= e.timeStart && currentTime <= e.timeStop){
+        return i;
       }
     }
+    return -1;
   }
 
   //displaying the lyrics
   display(currentTime){
-    this.lyric = this.findCurrentLyric(currentTime);
-    if (!this.lyric) {
+    let idx = this.findCurrentIndex(currentTime);
+    if (idx === -1){
       return;
     }
+
+    let current = this.lyrics[idx];
+
+    let prev = null;
+    let next = null;
+
+    if (idx > 0) {
+      prev = this.lyrics[idx - 1];
+    }
+    if (idx < this.lyrics.length - 1){
+      next = this.lyrics[idx + 1];
+    }
     
-    this.progress = (currentTime - this.lyric.timeStart) / 
-                    (this.lyric.timeStop - this.lyric.timeStart);
-    this.w = textWidth(this.lyric.lyric); 
-    let highlightWidth = this.w * this.progress;
+    let progress = (currentTime - current.timeStart) / 
+                    (current.timeStop - current.timeStart);
+    progress = constrain(progress, 0, 1);
 
     //lyric text
-    textAlign(LEFT, CENTER);
-    fill(0);
-    stroke(255);
-    strokeWeight(3);
-    //text(this.lyric.lyric, cx, cy);
-    //text(this.lyric.lyric, textX, textY);
+    textSize(36);
+    textAlign(CENTER, CENTER);
+    textFont("Courier New");
+    
+    let x = width/2;
+    let y = height/2;
+    let gap = 60;
 
-    if (this.lyric.lyric !== lastLyric){
-      scrollingLyrics.push({
-        text: this.lyric.lyric,
-        y: height + scrollingLyrics.length * lineSpace
-      });
-
-      //nextLine += scrollSpace;
-      lastLyric = this.lyric.lyric;
+    //previous line
+    if (prev && prev.lyric){
+      textSize(26);
+      fill(0, 90);
+      text(prev.lyric, x, y - gap);
     }
 
-    // //design for the bar
-    // textSize(36);
-    // let h = 36 *1.2;
-    // let cx = width/2 - this.w/2; //22closer to words
-    // //let cl = cx - w/2; //start from left
-    // let cy = height/2 - h/2;//-20 tomove up
-    // fill('black');
-    // rect(cx + 22, line.y, abs(highlightWidth), h); //hW might be neg
+    //current
+    textSize(36);
+    fill(40);
+    text(current.lyric, x, y);
+
+    //highlight
+    let w = textWidth(current.lyric);
+    let h = 44;
+    let leftX = x - w/2;
+    let clipW = w * progress;
+
+    drawingContext.save();
+    drawingContext.beginPath();
+    drawingContext.rect(leftX, y - h/2, clipW, h);
+    drawingContext.clip();
+
+    fill('#F24FB3');
+    text(current.lyric, x, y);
+
+    drawingContext.restore();
+
+    //next
+    if (next){
+      textSize(26);
+      fill(0, 90);
+      if (next && next.lyric){
+        text(next.lyric, x, y + gap);
+      }
+    }
+
+    // if (entry.lyric !== lastLyric){
+    //   scrollingLyrics.push({
+    //     text: entry.lyric,
+    //     y: height + scrollingLyrics.length * (36 * 1.3)
+    //   });
+
+    //   //nextLine += scrollSpace;
+    //   lastLyric = entry.lyric;
+    // }
   }
 }
 
-//Scrolling lyrics effect
-function lyricScroll(){
-  if (scrollLyric === true){
-    return;
-  }
+// //Scrolling lyrics effect
+// function lyricScroll(){
+//   if (!scrollLyric){
+//     return;
+//   }
 
-  fill(0);
-  textAlign(CENTER, CENTER);
-  textSize(32);
+//   fill(0);
+//   textAlign(CENTER, CENTER);
+//   textSize(32);
 
-  for (let i = 0; i < scrollingLyrics.length; i++){
-    let line = scrollingLyrics[i];
-    text(line.text, width/2, line.y);
-    text(line.text, width/2, line.y/1.7);
+//   for (let line of scrollingLyrics){
+//     text(line.text, width/2, line.y);
+//     line.y -= scrollSpeed;
+//   }
 
-    line.y -= scrollSpeed;
-  }
-
-  //remove lyrics out of screen
-  for (let i = scrollingLyrics.length - 1; i >= 0; i--){
-    if (scrollingLyrics[i].y < -50){
-      scrollingLyrics.splice(i, 1);
-    }
-  }
-}
+//   //remove lyrics out of screen
+//   for (let i = scrollingLyrics.length - 1; i >=0; i--){
+//     if (scrollingLyrics[i].y < -50){
+//       scrollingLyrics.splice(i, 1);
+//     }
+//   }
+// }
 
 function buttonfunction(){
 
@@ -212,7 +290,6 @@ function buttonfunction(){
   pauseBtn = createImg('pause-button.png', 'Pause Button');
   pauseBtn.style('width', '100px');
   pauseBtn.style('height', '100px');
-  pauseBtn.position(width/2, 600);
   pauseBtn.mousePressed(togglePause); //
   pauseBtn.hide();
 
@@ -220,7 +297,6 @@ function buttonfunction(){
   playBtn = createImg('play-button.png', 'Play Button');
   playBtn.style('width', '100px');
   playBtn.style('height', '100px');
-  playBtn.position(width/2, 600);
   playBtn.mousePressed(togglePause); 
   playBtn.hide();
 
@@ -228,9 +304,13 @@ function buttonfunction(){
   resetBtn = createImg('reset.png', 'Reset Button');
   resetBtn.style('width', '100px');
   resetBtn.style('height', '100px');
-  resetBtn.position(width/2 -200, 600);
   resetBtn.mousePressed(resetKaraoke);
   resetBtn.hide();
+
+  //Btn posistion
+  pauseBtn.position(width/2 - 50, height - 150);
+  playBtn.position(width/2 - 50, height - 150);
+  resetBtn.position(width/2 -200, height - 150);
 }
 
 function draw() {
@@ -238,8 +318,24 @@ function draw() {
   start();
   logoDraw();
 
-  lyricScroll();
+  //lyricScroll();
+  seePitch();
   //showSplit();
+}
+
+function seePitch(){
+  let p = window.micPitch || 0;
+
+  if (p > 0){
+    fill(0);
+    textSize(20);
+    textAlign(LEFT, TOP);
+    text("Mic pitch: " + p.toFixed(1) + " Hz", 20, 40);
+  }
+  else {
+    fill(100);
+    text("Mic Pitch: ---", 20, 20);
+  }
 }
 
 function logoDraw(){
@@ -260,14 +356,12 @@ function logoDraw(){
 
 function start(){
   //button press start
-  if (started){
+  if (started && currentSong){
     textSize(36);
     textFont("Courier New");
     karaoke.display(currentSong.currentTime());
-    karaoke.display(currentSong01.currentTime()); //change back to CurrentSong
-    lyricScroll();
   }
-  else{
+  else {
     textFont('Courier New');
     textStyle(ITALIC);
     textSize(24);
@@ -291,6 +385,7 @@ function start(){
 function startKaraoke(){
   canvas.parent("rightPanel");
   resizeCanvas(windowWidth * 0.78, windowHeight);
+  showSongList();
   
   document.getElementById("layout").classList.remove("hidden");
   btn.hide();
@@ -298,14 +393,13 @@ function startKaraoke(){
 
   analyzer = new p5.Amplitude(0, 5);
   analyzer.setInput(currentSong);
-  currentSong.loop();
-  analyzer.setInput(currentSong01);//remove 01
-  currentSong01.loop();//remove 01
-  started = true;
 
+  currentSong.loop();
+
+  started = true;
   btnvisi = false;
   logoVisible = false;
-  scrollLyric = false;
+  scrollLyric = true;
 
   pauseBtn.show();
   playBtn.hide();
@@ -313,25 +407,25 @@ function startKaraoke(){
 }
 
 function showSongList(){
-  let left = document.getElementById("leftPanel");
+  document.getElementById("leftPanel").classList.remove("hidden");
+}
 
-  left.innerHTML = `
-    <h1>Song List</h1>
-    <ul class = "songs">
-      <h3>Baby - Justin Bieber<h3>
-      <h3>I am still standing - Sing<h3>
-      // <a href="#section2">Go to Section 2</a>
-      <a href="#section2">Baby - Justin Bieber</a>
-      <a href="#section2">I am still standing - Sing</a>
-    </ul>
-  `;
+function selectSong(i){
+  loadSong(i);
+  currentSong.loop();
+  scrollLyric = true;
+
+  pauseBtn.show();
+  playBtn.hide();
 }
 
 
 //reset button actio
 function resetKaraoke(){
-  currentSong01.stop(); //remove 01
-  currentSong01.jump(0); //remove 01
+  if (currentSong){
+    currentSong.stop(); 
+    currentSong.jump(0); 
+  }
   started = false;
   btnvisi = true;
 
@@ -339,22 +433,27 @@ function resetKaraoke(){
   playBtn.hide();
   resetBtn.hide();
 
-  //logoVisible = true;
-
   document.getElementById("layout").classList.add("hidden");
+
+  logoVisible = true;
+  scrollLyric = false;
 }
 
 //when pause is pressed
 function togglePause(){
-  if (currentSong01.isPlaying()){ //remove 01
-    currentSong01.pause(); //remove 01
+  if (!currentSong){
+    return;
+  }
+
+  if (currentSong.isPlaying()){ 
+    currentSong.pause(); 
     scrollLyric = false;
     pauseBtn.hide();
     playBtn.show();
   }
   else{
     currentSong.play();
-    currentSong01.play(); //remove 01
+    scrollLyric = true;
     pauseBtn.show();
     playBtn.hide();
   }
