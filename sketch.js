@@ -4,8 +4,10 @@
 //
 // Extra for Experts:
 // https://editor.p5js.org/dansakamoto/sketches/H1ICcXXtm
-//https://prismic.io/blog/css-button-animations
-//https://editor.p5js.org/codingtrain/sketches/1UggvR8ix
+// https://prismic.io/blog/css-button-animations
+// https://editor.p5js.org/codingtrain/sketches/1UggvR8ix
+// https://www.w3schools.com/tags/ref_canvas.asp
+// https://p5js.org/reference/p5/drawingContext/
 
 // - describe what you did to take this project "above and beyond"
 
@@ -60,11 +62,16 @@ let scrollSpeed = 1;
 let loadedSongs = [];
 let currentSongIndex = 0;
 
+// Video
+const video = document.getElementById("myVideo");
+
+
 const SONG_LIST = [
   {
     title: "I Want It That Way (B99)",
     songFile: "B99_I want it that way.mp3",
-    lyricFile: "B99_lyrics.txt"
+    lyricFile: "B99_lyrics.txt",
+    
   },
   {
     title: "Baby_Justin Beiber",
@@ -72,6 +79,7 @@ const SONG_LIST = [
     lyricFile: "baby_lyrics.txt"
   },
 ];
+
 
 function preload(){
   for (let song of SONG_LIST){
@@ -460,19 +468,3 @@ function togglePause(){
 };
 
 
-// // double checking the normalization
-// let min = Infinity;
-// let max = -Infinity;
-
-// for (let i = 0; i < floatSamples.length; i++) {
-//   if (floatSamples[i] < min) min = floatSamples[i];
-//   if (floatSamples[i] > max) max = floatSamples[i];
-// }
-
-// console.log(
-//   "Float samples:",
-//   floatSamples.length,
-//   "Min:",
-//   min.toFixed(3),
-//   "Max:",
-//   max.toFixed(3)

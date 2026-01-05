@@ -111,3 +111,12 @@ canvas {
   position: relative;
   background: #03ADDE;
 }
+
+#myVideo {
+  position: fixed;
+  border-radius: 100px;
+  border: 2px solid #04AA6D;
+  padding: 20px; 
+  width: 150px;
+  height: 150px;
+}
