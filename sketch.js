@@ -1,36 +1,13 @@
 // Major project - Perfect Pitch
 // Ceberta Adum
-// Date
+// January 19, 2026
 //
 // Extra for Experts:
-// https://editor.p5js.org/dansakamoto/sketches/H1ICcXXtm
-// https://prismic.io/blog/css-button-animations
-// https://editor.p5js.org/codingtrain/sketches/1UggvR8ix
-// https://www.w3schools.com/tags/ref_canvas.asp
-// https://p5js.org/reference/p5/drawingContext/
-
 // - describe what you did to take this project "above and beyond"
 
-
-// const lyrics = [
-//   {
-//     "timeStart" : 2,
-//     "timeStop" : 8,
-//     "lyric" : "Oh, whoa-oh-oh-oh-oh Oh, whoa-oh-oh-oh, oh"
-//   } ,
-//   {
-//     "timeStart" : 9,
-//     "timeStop" : 13,
-//     "lyric" : "Oh, whoa, oh-oh-oh, oh, oh-oh, oh, oh-oh, oh"
-//   }
-// ];
-
-//
+// Defining 
 let currentSong;
 let rawLyrics;
-let currentSong01;
-let rawLyrics01;
-let yStart = 0;
 let time;
 let currentButton;
 let play;
@@ -42,30 +19,22 @@ let started = false;
 let btnvisi = true;
 let layer;
 let p;
-let logoX;
-let logoY;
-let jiggleEndTime;
-let jiggleAmount = 4;
 let logoVisible = true;
 let scrollLyric = true;
-let frame = 0;
 let logoimage;
 let theta = 0;
 let maxScale = 0.10;
 let baseScale = 1;
 let karaoke;
-let scrollY = 0;
 let scrollingLyrics = [];
 let lastLyric = '';
-let lineSpace = 2;
-let scrollSpeed = 1;
 let loadedSongs = [];
 let currentSongIndex = 0;
 
 // Video
 const video = document.getElementById("myVideo");
 
-
+//Song list
 const SONG_LIST = [
   {
     title: "I Want It That Way (B99)",
@@ -78,9 +47,14 @@ const SONG_LIST = [
     songFile: "justin-bieber_baby.mp3",
     lyricFile: "baby_lyrics.txt"
   },
+  {
+    title: "What's My Name - Descandants2",
+    songFile: "D2_What's My Name.mp3",
+    lyricFile: "D2_lyrics.txt"
+  },
 ];
 
-
+//Loading songs
 function preload(){
   for (let song of SONG_LIST){
     loadedSongs.push({
@@ -90,29 +64,31 @@ function preload(){
     });
   }
 
+  //loading images
   play = loadImage("play-button.png");
   pause = loadImage("pause-button.png");
   reset = loadImage("reset.png");
   logoimage = loadImage("perfect pitch.png");
   currentButton = loadImage("pause-button.png");
-
-  //B99_vid = load
 }
 
+// Setup
 function setup() {
   canvas = createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
 
-  cutOut();
   buttonfunction();
 
+  // Karoke lyrics and audio
   karaoke = new KaraokeLyrics();
   loadSong(0);
 
+  //connecting to html
   document.getElementById("layout").classList.add("hidden");
   document.getElementById("leftPanel").classList.add("hidden");
 }
 
+//Song order
 function loadSong(index){
   if (currentSong && currentSong.isPlaying()) {
     currentSong.stop();
@@ -136,24 +112,13 @@ function loadSong(index){
   }
 }
 
-function cutOut(){
-  layer = createGraphics(windowWidth, windowHeight);
-  layer.textAlign(LEFT, CENTER);
-  layer.textSize(36);
-  layer.strokeWeight(3);
-}
-
-let delay_animation = 50;
-let lastMoveTime = 0;
-const create_gif = true;
-const image_width = 300;
-
-
+// Creating a class for lyrics
 class KaraokeLyrics {
   constructor(){
     this.lyrics = [];
   }
 
+  // Start and stop time of lyrics
   load(rawLyrics){ 
     for (let line of rawLyrics){ 
       this.parts = line.split("|");
@@ -244,41 +209,8 @@ class KaraokeLyrics {
         text(next.lyric, x, y + gap);
       }
     }
-
-    // if (entry.lyric !== lastLyric){
-    //   scrollingLyrics.push({
-    //     text: entry.lyric,
-    //     y: height + scrollingLyrics.length * (36 * 1.3)
-    //   });
-
-    //   //nextLine += scrollSpace;
-    //   lastLyric = entry.lyric;
-    // }
   }
 }
-
-// //Scrolling lyrics effect
-// function lyricScroll(){
-//   if (!scrollLyric){
-//     return;
-//   }
-
-//   fill(0);
-//   textAlign(CENTER, CENTER);
-//   textSize(32);
-
-//   for (let line of scrollingLyrics){
-//     text(line.text, width/2, line.y);
-//     line.y -= scrollSpeed;
-//   }
-
-//   //remove lyrics out of screen
-//   for (let i = scrollingLyrics.length - 1; i >=0; i--){
-//     if (scrollingLyrics[i].y < -50){
-//       scrollingLyrics.splice(i, 1);
-//     }
-//   }
-// }
 
 function buttonfunction(){
 
@@ -466,5 +398,3 @@ function togglePause(){
     playBtn.hide();
   }
 };
-
-
