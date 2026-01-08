@@ -7,7 +7,7 @@ what advice would you give to yourself if you were to start a project like this 
 - 
 
 ### Q2
-did you complete everything in your “needs to have” list?
+Did you complete everything in your “needs to have” list?
 - Everything in the needs to have was accomplished 
     - Buttons: the start button, the pause or play button and the songs
     - Lyric: A lyrics file was created and later displayed

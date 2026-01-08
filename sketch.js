@@ -170,8 +170,8 @@ class KaraokeLyrics {
     textFont("Courier New");
     
     let x = width/2;
-    let y = height/2;
-    let gap = 60;
+    let y = height/2 + 100;
+    let gap = 50;
 
     //previous line
     if (prev && prev.lyric){
@@ -185,17 +185,19 @@ class KaraokeLyrics {
     fill(40);
     text(current.lyric, x, y);
 
-    //highlight
+    //highlight def
     let w = textWidth(current.lyric);
     let h = 44;
     let leftX = x - w/2;
     let clipW = w * progress;
 
+    //highlight using drawing Context
     drawingContext.save();
     drawingContext.beginPath();
     drawingContext.rect(leftX, y - h/2, clipW, h);
     drawingContext.clip();
 
+    //design
     fill('#F24FB3');
     text(current.lyric, x, y);
 
@@ -253,16 +255,16 @@ function buttonfunction(){
   resetBtn.position(width/2 -200, height - 150);
 }
 
+//Draw function
 function draw() {
   background('#C9C6D7');
   start();
   logoDraw();
 
-  //lyricScroll();
   seePitch();
-  //showSplit();
 }
 
+//pitch captured by mic
 function seePitch(){
   let p = window.micPitch || 0;
 
@@ -278,12 +280,13 @@ function seePitch(){
   }
 }
 
+//drawing the logo
 function logoDraw(){
   if (logoVisible === false){
     return;
   }
 
-  //Pulsing
+  //Pulsing effect
   let scaleAmount = baseScale + sin(theta) * maxScale;
   let w = logoimage.width * scaleAmount;
   let h = logoimage.height * scaleAmount;
@@ -294,6 +297,7 @@ function logoDraw(){
   theta += 0.05;
 }
 
+// intializing witha button click
 function start(){
   //button press start
   if (started && currentSong){
@@ -301,6 +305,7 @@ function start(){
     textFont("Courier New");
     karaoke.display(currentSong.currentTime());
   }
+  //text style
   else {
     textFont('Courier New');
     textStyle(ITALIC);
@@ -323,10 +328,10 @@ function start(){
 
 // What happens when msc srts
 function startKaraoke(){
+  // canvas design
   canvas.parent("rightPanel");
   resizeCanvas(windowWidth * 0.78, windowHeight);
   showSongList();
-  
   document.getElementById("layout").classList.remove("hidden");
   btn.hide();
   showSongList();
@@ -341,27 +346,32 @@ function startKaraoke(){
   logoVisible = false;
   scrollLyric = true;
 
+  //button display
   pauseBtn.show();
   playBtn.hide();
   resetBtn.show();
 }
 
+//display the list of songs
 function showSongList(){
   document.getElementById("leftPanel").classList.remove("hidden");
 }
 
+//selecting song
 function selectSong(i){
   loadSong(i);
   currentSong.loop();
   scrollLyric = true;
 
+  //btn display
   pauseBtn.show();
   playBtn.hide();
 }
 
 
-//reset button actio
+//reset button function
 function resetKaraoke(){
+  //stopping song
   if (currentSong){
     currentSong.stop(); 
     currentSong.jump(0); 
@@ -369,22 +379,26 @@ function resetKaraoke(){
   started = false;
   btnvisi = true;
 
+  //hiding buttons
   pauseBtn.hide();
   playBtn.hide();
   resetBtn.hide();
+  //video.hide();
 
   document.getElementById("layout").classList.add("hidden");
 
+  //hiding features
   logoVisible = true;
   scrollLyric = false;
 }
 
-//when pause is pressed
+//wPuase button function
 function togglePause(){
   if (!currentSong){
     return;
   }
 
+  //switching btwn pause and play btn
   if (currentSong.isPlaying()){ 
     currentSong.pause(); 
     scrollLyric = false;
@@ -396,5 +410,12 @@ function togglePause(){
     scrollLyric = true;
     pauseBtn.show();
     playBtn.hide();
+  }
+
+  if (video.paused) {
+    video.play();
+  } 
+  else {
+    video.pause();
   }
 };

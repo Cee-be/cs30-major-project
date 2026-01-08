@@ -30,20 +30,24 @@
       <div id = "leftPanel">
         <h1>Song List</h1>
 
-        <button onclick="selectSong(0)">
+        <button onclick="selectSong(0)" class="button">
           I Want It That Way (B99)
         </button>
 
-        <button onclick="selectSong(1)">
+        <button onclick="selectSong(1)" class="button">
           Baby - Justin Bieber
         </button>
 
-        <button onclick="selectSong(2)">
+        <button onclick="selectSong(2)" class="button">
           What's My Name - Descandants2
         </button>
 
       </div>
       <div id = "rightPanel"></div>
+
+      <video autoplay muted loop id="myVideo">
+        <source src="B99_I Want It That Way.mp4" type="video/mp4">
+      </video>
     </div>
 
     <div id="micStatus">
@@ -54,8 +58,5 @@
     <script src="sketch.js"></script>
     <script type="module" src="pitch.js"></script> 
 
-    <video autoplay muted loop id="myVideo">
-      <source src="B99_I Want It That Way.mp4" type="video/mp4">
-    </video>
   </body>
 </html>
