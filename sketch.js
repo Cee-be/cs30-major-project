@@ -32,7 +32,7 @@ let loadedSongs = [];
 let currentSongIndex = 0;
 
 // Video
-const video = document.getElementById("myVideo");
+//const video = document.getElementById("myVideo");
 
 //Song list
 const SONG_LIST = [
@@ -40,7 +40,7 @@ const SONG_LIST = [
     title: "I Want It That Way (B99)",
     songFile: "B99_I want it that way.mp3",
     lyricFile: "B99_lyrics.txt",
-    
+    videoFile: "B99_I Want It That Way.mp4",
   },
   {
     title: "Baby_Justin Beiber",
@@ -61,8 +61,9 @@ function preload(){
       title: song.title,
       sound: loadSound(song.songFile),
       lyrics: loadStrings(song.lyricFile)
-    });
+      //video:  video.load = (song.videoFile)
   }
+
 
   //loading images
   play = loadImage("play-button.png");
@@ -110,7 +111,9 @@ function loadSong(index){
   if (analyzer){
     analyzer.setInput(currentSong);
   }
-}
+
+  //video 
+ 
 
 // Creating a class for lyrics
 class KaraokeLyrics {
