@@ -430,6 +430,8 @@ function resetKaraoke(){
 
 //wPuase button function
 function togglePause(){
+  pauseBtn.parent("bottomPanel");
+
   if (!currentSong){
     return;
   }

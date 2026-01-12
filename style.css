@@ -106,9 +106,19 @@ canvas {
 }
 
 #rightPanel {
-  width: 78%;
+  width: 78%; 
   position: relative;
-  background: #03ADDE;
+  /* background: #03ADDE; */
+}
+
+#bottomPanel {
+  position: absolute;
+  height: 20%;
+  left: 50%;
+  width: 50%;
+  bottom: 5px;
+  display: flex;
+  z-index: -9999;
 }
 
 #myVideo {
