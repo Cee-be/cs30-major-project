@@ -112,9 +112,10 @@ canvas {
 }
 
 #myVideo {
-  position: fixed;
+  position: absolute;
   border-radius: 100px;
   border: 2px solid #F279BE;
+  z-index: 1;
   padding: 0px; 
   width: 350px;
   height: 350px;

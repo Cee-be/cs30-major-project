@@ -30,9 +30,8 @@ let scrollingLyrics = [];
 let lastLyric = '';
 let loadedSongs = [];
 let currentSongIndex = 0;
-
-// Video
-//const video = document.getElementById("myVideo");
+let currentVideo = null;
+let videoEl;
 
 //Song list
 const SONG_LIST = [
@@ -45,7 +44,8 @@ const SONG_LIST = [
   {
     title: "Baby_Justin Beiber",
     songFile: "justin-bieber_baby.mp3",
-    lyricFile: "baby_lyrics.txt"
+    lyricFile: "baby_lyrics.txt",
+    videoFile: "justin-baby_vid.mp4",
   },
   {
     title: "What's My Name - Descandants2",
@@ -60,10 +60,9 @@ function preload(){
     loadedSongs.push({
       title: song.title,
       sound: loadSound(song.songFile),
-      lyrics: loadStrings(song.lyricFile)
-      //video:  video.load = (song.videoFile)
+      lyrics: loadStrings(song.lyricFile),
+    });
   }
-
 
   //loading images
   play = loadImage("play-button.png");
@@ -87,17 +86,40 @@ function setup() {
   //connecting to html
   document.getElementById("layout").classList.add("hidden");
   document.getElementById("leftPanel").classList.add("hidden");
+
+  // Video
+  videoEl = document.getElementById("myVideo");
+  videoEl.style.display = "none"; 
 }
 
 //Song order
 function loadSong(index){
-  if (currentSong && currentSong.isPlaying()) {
-    currentSong.stop();
-  }
-
   currentSongIndex = index;
   currentSong = loadedSongs[index].sound;
   rawLyrics = loadedSongs[index].lyrics;
+
+  if (currentSong) {
+    currentSong.stop();
+  }
+
+  //Video
+  const v = SONG_LIST[index].videoFile;
+  if (videoEl){
+    if (v){
+      videoEl.src = v;
+      console.log("vid src:", videoEl.src);
+      videoEl.load();
+      videoEl.muted = true;
+      videoEl.style.display = "block";
+      videoEl.pause();
+    }
+    else{
+      videoEl.pause();
+      videoEl.removeAttribute("src");
+      videoEl.load();
+      videoEl.style.display = "none";
+    }
+  }
 
   //scrolling
   scrollingLyrics = [];
@@ -111,9 +133,7 @@ function loadSong(index){
   if (analyzer){
     analyzer.setInput(currentSong);
   }
-
-  //video 
- 
+}
 
 // Creating a class for lyrics
 class KaraokeLyrics {
@@ -207,12 +227,10 @@ class KaraokeLyrics {
     drawingContext.restore();
 
     //next
-    if (next){
+    if (next && next.lyric){
       textSize(26);
       fill(0, 90);
-      if (next && next.lyric){
-        text(next.lyric, x, y + gap);
-      }
+      text(next.lyric, x, y + gap);
     }
   }
 }
@@ -279,6 +297,7 @@ function seePitch(){
   }
   else {
     fill(100);
+    textAlign(LEFT, TOP);
     text("Mic Pitch: ---", 20, 20);
   }
 }
@@ -353,6 +372,11 @@ function startKaraoke(){
   pauseBtn.show();
   playBtn.hide();
   resetBtn.show();
+
+  if (videoEl && videoEl.src){
+    videoEl.currentTime = 0;
+    videoEl.play();
+  }
 }
 
 //display the list of songs
@@ -364,6 +388,10 @@ function showSongList(){
 function selectSong(i){
   loadSong(i);
   currentSong.loop();
+  if (videoEl && videoEl.src){
+    videoEl.currentTime = 0;
+    videoEl.play();
+  }
   scrollLyric = true;
 
   //btn display
@@ -393,6 +421,11 @@ function resetKaraoke(){
   //hiding features
   logoVisible = true;
   scrollLyric = false;
+
+  if (videoEl && videoEl.src){
+    videoEl.pause();
+    VideoE1.currentTime = 0;
+  }
 }
 
 //wPuase button function
@@ -401,24 +434,26 @@ function togglePause(){
     return;
   }
 
+  const shouldPause = currentSong.isPlaying();
+
   //switching btwn pause and play btn
-  if (currentSong.isPlaying()){ 
+  if (shouldPause){ 
     currentSong.pause(); 
     scrollLyric = false;
     pauseBtn.hide();
     playBtn.show();
+
+    if (videoEl && videoEl.src){
+      videoEl.pause();
+    }
   }
   else{
     currentSong.play();
     scrollLyric = true;
     pauseBtn.show();
     playBtn.hide();
+    if (videoEl && videoEl.src){
+      videoEl.play();
+    }
   }
-
-  if (video.paused) {
-    video.play();
-  } 
-  else {
-    video.pause();
-  }
-};
+}
