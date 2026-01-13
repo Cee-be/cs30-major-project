@@ -1,6 +1,6 @@
 import { PitchDetector } from "https://esm.sh/pitchy@4";
 
-const SAMPLE_RATE = 16000;
+const SAMPLE_RATE = 44100;
 const WINDOW = 1024;
 const detector = PitchDetector.forFloat32Array(WINDOW);
 
@@ -30,7 +30,7 @@ function setPitch(msg){
 
 
 
-const ws = new WebSocket("ws://10.213.113.101:81");
+const ws = new WebSocket("ws://10.209.33.101:81");
 window.ws = ws;
 ws.binaryType = "arraybuffer";
 
@@ -54,38 +54,40 @@ ws.onclose = (e) => {
 
 ws.onmessage = (event) => {
   const intSamples = new Int16Array(event.data);
-  if (intSamples.length < WINDOW) {
-    return;
-  }
-  const floatSamples = new Float32Array(WINDOW);
-  for (let i = 0; i < WINDOW; i++) {
-    floatSamples[i] = intSamples[i] / 32768;
-  }
+  console.log("samples:", intSamples.length);
+  if (intSamples.length < WINDOW) return;
 
-  // remove DC offset
+  const floatSamples = new Float32Array(WINDOW);
+  for (let i = 0; i < WINDOW; i++) floatSamples[i] = intSamples[i] / 32768;
+
+  // DC offset removal (correct)
   let mean = 0;
-  for (let i = 0; i < WINDOW; i++){
-    mean += floatSamples[i];
-    mean /= WINDOW;
-  } 
-  for (let i = 0; i < WINDOW; i++) {
-    floatSamples[i] -= mean;
+  for (let i = 0; i < WINDOW; i++) mean += floatSamples[i];
+  mean /= WINDOW;
+  for (let i = 0; i < WINDOW; i++) floatSamples[i] -= mean;
+
+  // volume gate (RMS)
+  let rms = 0;
+  for (let i = 0; i < WINDOW; i++) rms += floatSamples[i] * floatSamples[i];
+  rms = Math.sqrt(rms / WINDOW);
+
+  if (rms < 0.01) {
+    window.micPitch = 0;
+    setPitch(`--- (quiet) rms=${rms.toFixed(3)}`);
+    return;
   }
 
   const [frequency, clarity] = detector.findPitch(floatSamples, SAMPLE_RATE);
 
-  if (
-    frequency &&
-    clarity > 0.6 &&
-    frequency >= 80 &&
-    frequency <= 1000
-  ) {
+  setPitch(`f=${frequency ? frequency.toFixed(1) : "---"} c=${clarity.toFixed(2)} rms=${rms.toFixed(3)}`);
+
+  if (frequency && clarity > 0.6 && frequency >= 80 && frequency <= 1000) {
     window.micPitch = frequency;
-  } 
-  else {
+  } else {
     window.micPitch = 0;
   }
 };
+
 
 
 

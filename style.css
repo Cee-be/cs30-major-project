@@ -100,25 +100,25 @@ canvas {
 }
 
 #leftPanel {
-  width: 22%;
+  width: 20%;
   background: #F279BE;
   padding: 20px;
 }
 
 #rightPanel {
-  width: 78%; 
+  width: 80%; 
   position: relative;
   /* background: #03ADDE; */
 }
 
 #bottomPanel {
   position: absolute;
-  height: 20%;
-  left: 50%;
-  width: 50%;
-  bottom: 5px;
-  display: flex;
-  z-index: -9999;
+  height: 25%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  background: rgba(0,0,0,0.4);
 }
 
 #myVideo {
