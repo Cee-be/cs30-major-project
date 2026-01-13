@@ -101,14 +101,13 @@ canvas {
 
 #leftPanel {
   width: 20%;
-  background: #F279BE;
+  background: #05ADDE;
   padding: 20px;
 }
 
 #rightPanel {
   width: 80%; 
   position: relative;
-  /* background: #03ADDE; */
 }
 
 #bottomPanel {
@@ -117,14 +116,18 @@ canvas {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 5;
-  background: rgba(0,0,0,0.4);
+  z-index: 10;
+  background: #FDCBE8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
 }
 
 #myVideo {
   position: absolute;
   border-radius: 100px;
-  border: 2px solid #F279BE;
+  border: 2px solid #F3DEFA;
   z-index: 1;
   padding: 0px; 
   width: 350px;
@@ -134,19 +137,21 @@ canvas {
 }
 
 .button {
-  background-color: #04AA6D;
+  background-color: #0285C0;
+  width: 350px;
   border: none;
-  color: white;
+  border-radius: 150px;
+  color: #FCCAE8;
   padding: 15px 32px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  margin: 4px 2px;
+  margin: 10px ;
   cursor: pointer;
   transition-duration: 0.4s;
 }
 
 .button:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.6);
+  box-shadow: 0 8px 16px 0 #FB3499;
 }

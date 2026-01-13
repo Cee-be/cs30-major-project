@@ -90,6 +90,11 @@ function setup() {
   // Video
   videoEl = document.getElementById("myVideo");
   videoEl.style.display = "none"; 
+
+  //Button
+  resetBtn.parent("bottomPanel");
+  pauseBtn.parent("bottomPanel");
+  playBtn.parent("bottomPanel");
 }
 
 //Song order
@@ -271,14 +276,14 @@ function buttonfunction(){
   resetBtn.hide();
 
   //Btn posistion
-  pauseBtn.position(width/2 - 50, height - 150);
-  playBtn.position(width/2 - 50, height - 150);
-  resetBtn.position(width/2 -200, height - 150);
+  // pauseBtn.position(width/2 - 50, height - 150);
+  // playBtn.position(width/2 - 50, height - 150);
+  // resetBtn.position(width/2 -200, height - 150);
 }
 
 //Draw function
 function draw() {
-  background('#C9C6D7');
+  background('#C9C6D9');
   start();
   logoDraw();
 
@@ -424,14 +429,12 @@ function resetKaraoke(){
 
   if (videoEl && videoEl.src){
     videoEl.pause();
-    VideoE1.currentTime = 0;
+    videoE1.currentTime = 0;
   }
 }
 
 //wPuase button function
 function togglePause(){
-  pauseBtn.parent("bottomPanel");
-
   if (!currentSong){
     return;
   }
