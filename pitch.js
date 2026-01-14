@@ -1,6 +1,6 @@
 import { PitchDetector } from "https://esm.sh/pitchy@4";
 
-const SAMPLE_RATE = 44100;
+const SAMPLE_RATE = 16000;
 const WINDOW = 1024;
 const detector = PitchDetector.forFloat32Array(WINDOW);
 
@@ -10,6 +10,11 @@ window.ws = null;
 
 ///connecting wothh mic
 //const ESP32_IP = "10.231.242.101";
+
+const hann = new Float32Array(WINDOW);
+for (let i = 0; i < WINDOW; i++) {
+  hann[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i) / (WINDOW - 1);
+}
 
 
 const statusEl = document.getElementById("status");
@@ -54,39 +59,62 @@ ws.onclose = (e) => {
 
 ws.onmessage = (event) => {
   const intSamples = new Int16Array(event.data);
-  console.log("samples:", intSamples.length);
   if (intSamples.length < WINDOW) return;
 
-  const floatSamples = new Float32Array(WINDOW);
-  for (let i = 0; i < WINDOW; i++) floatSamples[i] = intSamples[i] / 32768;
+  // debug stats
+  let min = 99999, max = -99999, sum = 0;
+  for (let i = 0; i < WINDOW; i++) {
+    const v = intSamples[i];
+    if (v < min) min = v;
+    if (v > max) max = v;
+    sum += Math.abs(v);
+  }
+  const avgAbs = sum / WINDOW;
+  console.log("min/max/avgAbs:", min, max, avgAbs.toFixed(1));
 
-  // DC offset removal (correct)
+  // 1) Convert to float (-1..1)
+  const floatSamples = new Float32Array(WINDOW);
+  for (let i = 0; i < WINDOW; i++) {
+    floatSamples[i] = intSamples[i] / 32768;
+  }
+
+  // 2) DC remove
   let mean = 0;
   for (let i = 0; i < WINDOW; i++) mean += floatSamples[i];
   mean /= WINDOW;
   for (let i = 0; i < WINDOW; i++) floatSamples[i] -= mean;
 
-  // volume gate (RMS)
-  let rms = 0;
-  for (let i = 0; i < WINDOW; i++) rms += floatSamples[i] * floatSamples[i];
-  rms = Math.sqrt(rms / WINDOW);
-
-  if (rms < 0.01) {
-    window.micPitch = 0;
-    setPitch(`--- (quiet) rms=${rms.toFixed(3)}`);
-    return;
+  // 3) High-pass (kills low rumble like ~43 Hz)
+  let prevX = 0, prevY = 0;
+  const a = 0.995; // try 0.99 if rumble still dominates
+  for (let i = 0; i < WINDOW; i++) {
+    const x = floatSamples[i];
+    const y = a * (prevY + x - prevX);
+    floatSamples[i] = y;
+    prevX = x;
+    prevY = y;
   }
 
+  // 4) Hann window
+  for (let i = 0; i < WINDOW; i++) {
+    floatSamples[i] *= hann[i];
+  }
+
+  // 5) Pitch detect
   const [frequency, clarity] = detector.findPitch(floatSamples, SAMPLE_RATE);
+  console.log("freq:", frequency, "clarity:", clarity);
 
-  setPitch(`f=${frequency ? frequency.toFixed(1) : "---"} c=${clarity.toFixed(2)} rms=${rms.toFixed(3)}`);
-
-  if (frequency && clarity > 0.6 && frequency >= 80 && frequency <= 1000) {
+  // show + accept
+  if (frequency && clarity > 0.4 && frequency >= 80 && frequency <= 1000) {
     window.micPitch = frequency;
+    setPitch(`f=${frequency.toFixed(1)} c=${clarity.toFixed(2)}`);
   } else {
     window.micPitch = 0;
+    setPitch("---");
   }
 };
+
+
 
 
 
