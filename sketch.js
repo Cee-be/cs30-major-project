@@ -103,9 +103,9 @@ function loadSong(index){
   currentSong = loadedSongs[index].sound;
   rawLyrics = loadedSongs[index].lyrics;
 
-  if (currentSong) {
-    currentSong.stop();
-  }
+  // if (currentSong) {
+  //   currentSong.stop();
+  // }
 
   //Video
   const v = SONG_LIST[index].videoFile;
@@ -331,6 +331,7 @@ function start(){
     textSize(36);
     textFont("Courier New");
     karaoke.display(currentSong.currentTime());
+    //text("Select Your Song", width/2 - 150 , height/2 - 150);
   }
   //text style
   else {
@@ -429,7 +430,7 @@ function resetKaraoke(){
 
   if (videoEl && videoEl.src){
     videoEl.pause();
-    videoE1.currentTime = 0;
+    videoEl.currentTime = 0;
   }
 }
 
