@@ -32,6 +32,8 @@ let loadedSongs = [];
 let currentSongIndex = 0;
 let currentVideo = null;
 let videoEl;
+let score = 0;
+let lastScoredIndex = -1;
 
 //Song list
 const SONG_LIST = [
@@ -52,6 +54,23 @@ const SONG_LIST = [
     songFile: "D2_What's My Name.mp3",
     lyricFile: "D2_lyrics.txt"
   },
+  {
+    title: "Mary Had A Little Lamb",
+    songFile: "Mary Had A Little Lamb.mp3",
+    lyricFile: "Mary Had A Little Lamb_lyrics.txt",
+    videoFile: "Mary Had A Little Lamb_vid.mp4",
+  },
+];
+
+//Pitch/Frequencies/Mary Had
+const TARGETS = [
+  {t0: 6.0, t1: 7.0, freq: 329.6}, //E4
+  {t0: 7.0, t1: 8.0, freq: 293.7}, //D4
+  {t0: 8.0, t1: 9.0, freq: 261.6}, //C4
+  {t0: 9.0, t1: 10.0, freq: 293.7}, //D4
+  {t0: 10.0, t1: 11.0, freq: 329.6}, //E4
+  {t0: 11.0, t1: 12.0, freq: 329.6}, //E4
+  {t0: 12.0, t1: 13.0, freq: 329.6}, //E4
 ];
 
 //Loading songs
@@ -96,6 +115,17 @@ function setup() {
   pauseBtn.parent("bottomPanel");
   playBtn.parent("bottomPanel");
 }
+
+//Freq return
+function getTargetFreq(t){
+  for (const a of TARGETS){
+    if (t >= a.t0 && t < a.t1){
+      return a.freq;
+    }
+  }
+  return 0;
+}
+
 
 //Song order
 function loadSong(index){
@@ -288,24 +318,102 @@ function draw() {
   logoDraw();
 
   seePitch();
+  showTarget();
+  pitchScore();
 }
 
 //pitch captured by mic
 function seePitch(){
-  let p = window.micPitch || 0;
+  let mic = window.micPitch;
 
-  if (p > 0){
-    fill(0);
-    textSize(20);
-    textAlign(LEFT, TOP);
-    text("Mic pitch: " + p.toFixed(1) + " Hz", 20, 40);
-  }
-  else {
-    fill(100);
-    textAlign(LEFT, TOP);
+  fill(0);
+  textSize(20);
+  textAlign(LEFT, TOP);
+
+  if (mic === undefined || mic === null || mic <= 0){
     text("Mic Pitch: ---", 20, 20);
   }
+  else {
+    text("Mic Pitch: " + mic.toFixed(1) + " Hz", 20, 20);
+  }
 }
+
+//showing target pitch
+function showTarget(){
+  if (!started || !currentSong) {
+    return;
+  }
+
+  if (SONG_LIST[currentSongIndex].title !== "Mary Had A Little Lamb") {
+    return;
+  }
+
+  const t = currentSong.currentTime();
+  const target = getTargetFreq(t);
+
+  fill(0);
+  textSize(20);
+  textAlign(LEFT, TOP);
+  
+  let label; ///move to top
+
+  if (target <= 0){
+    text("Target: ", 20, 70);
+  }
+  else{
+    text("Target: " + target.toFixed(1) + " Hz", 20, 70);
+  }
+}
+
+//getting indexoftargetpitch
+function getTargetIndex(t){
+  for (let i = 0; i < TARGETS.length; i++){
+    if (t >= TARGETS[i].t0 && t < TARGETS[i].t1){
+      return i;
+    }
+  }
+  return -1;
+}
+
+//score pitch
+function scorePitch(){
+  if (!started || !currentSong) {
+    return;
+  }
+
+  let mic = window.micPitch ||0;
+  let t = currentSong.currentTime();
+  let idx = getTargetIndex(t);
+
+  if (idx === -1){
+    return;
+  }
+  if (idx === lastScoredIndex){
+    return;
+  }
+
+  let target = TARGETS[idx].freq;
+  let diff = Math.abs(mic - target);
+
+  if (mic > 0){
+    if (diff <= 5){
+      score += 2;
+    }
+    if (diff <= 15){
+      score += 1;
+    }
+  }
+  lastScoredIndex = idx;
+}
+
+//Pitch Score
+function pitchScore(){
+  fill(0);
+  textSize(24);
+  textAlign(LEFT, TOP);
+  text("Score: " + score, 20, 100);
+}
+
 
 //drawing the logo
 function logoDraw(){
@@ -367,7 +475,7 @@ function startKaraoke(){
   analyzer = new p5.Amplitude(0, 5);
   analyzer.setInput(currentSong);
 
-  currentSong.loop();
+  currentSong.play();
 
   started = true;
   btnvisi = false;
