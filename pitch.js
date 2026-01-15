@@ -1,6 +1,6 @@
 import { PitchDetector } from "https://esm.sh/pitchy@4";
 
-const SAMPLE_RATE = 16000;
+const SAMPLE_RATE = 44100;
 const WINDOW = 1024;
 const detector = PitchDetector.forFloat32Array(WINDOW);
 
@@ -33,8 +33,6 @@ function setPitch(msg){
   }
 }
 
-
-
 const ws = new WebSocket("ws://10.209.33.101:81");
 window.ws = ws;
 ws.binaryType = "arraybuffer";
@@ -59,14 +57,23 @@ ws.onclose = (e) => {
 
 ws.onmessage = (event) => {
   const intSamples = new Int16Array(event.data);
-  if (intSamples.length < WINDOW) return;
+  if (intSamples.length < WINDOW){
+    return;
+  } 
+
+  console.log("first10:", Array.from(intSamples.slice(0,10)));
+
 
   // debug stats
   let min = 99999, max = -99999, sum = 0;
   for (let i = 0; i < WINDOW; i++) {
     const v = intSamples[i];
-    if (v < min) min = v;
-    if (v > max) max = v;
+    if (v < min) {
+      min = v;
+    }
+    if (v > max) {
+      max = v;
+    }
     sum += Math.abs(v);
   }
   const avgAbs = sum / WINDOW;
@@ -80,9 +87,13 @@ ws.onmessage = (event) => {
 
   // 2) DC remove
   let mean = 0;
-  for (let i = 0; i < WINDOW; i++) mean += floatSamples[i];
+  for (let i = 0; i < WINDOW; i++) {
+    mean += floatSamples[i];
+  }
   mean /= WINDOW;
-  for (let i = 0; i < WINDOW; i++) floatSamples[i] -= mean;
+  for (let i = 0; i < WINDOW; i++) {
+    floatSamples[i] -= mean;
+  }
 
   // 3) High-pass (kills low rumble like ~43 Hz)
   let prevX = 0, prevY = 0;
@@ -100,18 +111,20 @@ ws.onmessage = (event) => {
     floatSamples[i] *= hann[i];
   }
 
-  // 5) Pitch detect
+  //Pitch detect
   const [frequency, clarity] = detector.findPitch(floatSamples, SAMPLE_RATE);
   console.log("freq:", frequency, "clarity:", clarity);
 
-  // show + accept
-  if (frequency && clarity > 0.4 && frequency >= 80 && frequency <= 1000) {
-    window.micPitch = frequency;
-    setPitch(`f=${frequency.toFixed(1)} c=${clarity.toFixed(2)}`);
-  } else {
-    window.micPitch = 0;
+  // DEBUG MODE: always show raw pitch
+  window.micPitch = frequency || 0;
+
+  if (frequency) {
+    setPitch(`raw f=${frequency.toFixed(1)} c=${clarity.toFixed(3)}`);
+  } 
+  else {
     setPitch("---");
   }
+
 };
 
 
