@@ -1,5 +1,6 @@
 /* Progress bar - https://www.youtube.com/watch?v=JtrFzoL1joI */
 
+/* Body design */
 html, body {
   margin: 0;
   padding: 0;
@@ -9,45 +10,14 @@ html, body {
   text-align:center; 
 }
 
+/* Canvas design */
 canvas {
   position: absolute;
   left: 0;
   top: 0;
-  /*display: block;*/
 }
 
-.glow {
-  font-size: 80px;
-  color: #fff;
-  text-align: center;
-  -webkit-animation: glow 1s ease-in-out infinite alternate;
-  -moz-animation: glow 1s ease-in-out infinite alternate;
-  animation: glow 1s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-  from {
-    text-shadow: 
-    0 0 10px #fff,
-    0 0 20px #fff, 
-    0 0 30px #e60073, 
-    0 0 40px #e60073, 
-    0 0 50px #e60073, 
-    0 0 60px #e60073, 
-    0 0 70px #e60073;
-  }
-  to {
-    text-shadow: 
-    0 0 20px #fff, 
-    0 0 30px #ff4da6, 
-    0 0 40px #ff4da6, 
-    0 0 50px #ff4da6, 
-    0 0 60px #ff4da6, 
-    0 0 70px #ff4da6, 
-    0 0 80px #ff4da6;
-  }
-}
-
+/* Neon button effect */
 .neon-btn {
   position: relative;
   font-size: 1.5rem;
@@ -62,7 +32,6 @@ canvas {
   border-radius: 12px;
   
 }
-
 .neon-btn::before,
 .neon-btn::after {
   content: "";
@@ -73,11 +42,11 @@ canvas {
   animation: pulseOut 2s ease-out infinite;
   opacity: 0;
 }
-
 .neon-btn::after {
   animation-delay: 1s;
 }
 
+/* lines around button effect */
 @keyframes pulseOut {
   0% {
     transform: scale(1);
@@ -89,27 +58,32 @@ canvas {
   }
 }
 
+/* Non display of hidden */
 .hidden{
   display: none !important;
 }
 
+/* Layout design */
 #layout{
   display: flex;
   width: 100%;
   height: 100vh;
 }
 
+/* left panel(song list) */
 #leftPanel {
   width: 20%;
   background: #05ADDE;
   padding: 20px;
 }
 
+/* right panel(vid/lyrics list) */
 #rightPanel {
   width: 80%; 
   position: relative;
 }
 
+/* bottom panel(buttons) */
 #bottomPanel {
   position: absolute;
   height: 25%;
@@ -124,6 +98,7 @@ canvas {
   gap: 30px;
 }
 
+/* Video design */
 #myVideo {
   position: absolute;
   border-radius: 100px;
@@ -136,6 +111,7 @@ canvas {
   margin-top: 5%;
 }
 
+/* Button design */
 .button {
   background-color: #0285C0;
   width: 350px;
@@ -152,6 +128,7 @@ canvas {
   transition-duration: 0.4s;
 }
 
+/* hover effect */
 .button:hover {
   box-shadow: 0 8px 16px 0 #FB3499;
 }

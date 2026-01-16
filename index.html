@@ -17,7 +17,6 @@
        to p5.js above, and instead link to this minified version. The minified
        version takes less space, and turns off Friendly Error Messages. This 
        increases the speed of your program quite dramatically in some cases.-->
-    <!-- <script src="libraries/p5.min.js"></script> -->
 
     <script src="libraries/p5.sound.min.js"></script>
   </head>
@@ -27,6 +26,7 @@
 
     <div id = "layout" class = "hidden">
 
+      <!-- Left Panel,]; song display -->
       <div id = "leftPanel">
         <h1>Song List</h1>
 
@@ -43,12 +43,9 @@
         </button>
       </div>
 
-    
       <div id = "rightPanel">
         <div id = "bottomPanel"></div>
       </div>
-      
-      
 
       <video id="myVideo" autoplay muted loop type="audio/mpeg"></video>
     </div>

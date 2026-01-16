@@ -34,31 +34,36 @@ let currentVideo = null;
 let videoEl;
 let score = 0;
 let lastScoredIndex = -1;
+let prev = null;
+let next = null;
+scrollingLyrics = [];
+lastLyric = "";
+
 
 //Song list
 const SONG_LIST = [
   {
     title: "I Want It That Way (B99)",
-    songFile: "B99_I want it that way.mp3",
-    lyricFile: "B99_lyrics.txt",
-    videoFile: "B99_I Want It That Way.mp4",
+    songFile: "songs/B99_I want it that way.mp3",
+    lyricFile: "lyrics/B99_lyrics.txt",
+    videoFile: "video/B99_I Want It That Way.mp4",
   },
   {
     title: "Baby_Justin Beiber",
-    songFile: "justin-bieber_baby.mp3",
-    lyricFile: "baby_lyrics.txt",
-    videoFile: "justin-baby_vid.mp4",
+    songFile: "songs/justin-bieber_baby.mp3",
+    lyricFile: "lyrics/baby_lyrics.txt",
+    videoFile: "video/justin-baby_vid.mp4",
   },
   {
     title: "What's My Name - Descandants2",
-    songFile: "D2_What's My Name.mp3",
-    lyricFile: "D2_lyrics.txt"
+    songFile: "songs/D2_What's My Name.mp3",
+    lyricFile: "lyrics/D2_lyrics.txt"
   },
   {
     title: "Mary Had A Little Lamb",
-    songFile: "Mary Had A Little Lamb.mp3",
-    lyricFile: "Mary Had A Little Lamb_lyrics.txt",
-    videoFile: "Mary Had A Little Lamb_vid.mp4",
+    songFile: "songs/Mary Had A Little Lamb.mp3",
+    lyricFile: "lyrics/Mary Had A Little Lamb_lyrics.txt",
+    videoFile: "video/Mary Had A Little Lamb_vid.mp4",
   },
 ];
 
@@ -84,11 +89,11 @@ function preload(){
   }
 
   //loading images
-  play = loadImage("play-button.png");
-  pause = loadImage("pause-button.png");
-  reset = loadImage("reset.png");
-  logoimage = loadImage("perfect pitch.png");
-  currentButton = loadImage("pause-button.png");
+  play = loadImage("icons/play-button.png");
+  pause = loadImage("icons/pause-button.png");
+  reset = loadImage("icons/reset.png");
+  logoimage = loadImage("icons/perfect pitch.png");
+  currentButton = loadImage("icons/pause-button.png");
 }
 
 // Setup
@@ -116,7 +121,7 @@ function setup() {
   playBtn.parent("bottomPanel");
 }
 
-//Freq return
+//Freq of song 4 match
 function getTargetFreq(t){
   for (const a of TARGETS){
     if (t >= a.t0 && t < a.t1){
@@ -132,10 +137,6 @@ function loadSong(index){
   currentSongIndex = index;
   currentSong = loadedSongs[index].sound;
   rawLyrics = loadedSongs[index].lyrics;
-
-  // if (currentSong) {
-  //   currentSong.stop();
-  // }
 
   //Video
   const v = SONG_LIST[index].videoFile;
@@ -156,15 +157,10 @@ function loadSong(index){
     }
   }
 
-  //scrolling
-  scrollingLyrics = [];
-  lastLyric = "";
-
   //karaoke data
   karaoke = new KaraokeLyrics();
   karaoke.load(rawLyrics);
 
-  //analyzer
   if (analyzer){
     analyzer.setInput(currentSong);
   }
@@ -208,9 +204,6 @@ class KaraokeLyrics {
 
     let current = this.lyrics[idx];
 
-    let prev = null;
-    let next = null;
-
     if (idx > 0) {
       prev = this.lyrics[idx - 1];
     }
@@ -226,7 +219,7 @@ class KaraokeLyrics {
     textSize(36);
     textAlign(CENTER, CENTER);
     textFont("Courier New");
-    
+
     let x = width/2;
     let y = height/2 + 100;
     let gap = 50;
@@ -285,30 +278,25 @@ function buttonfunction(){
   btn.mousePressed(startKaraoke);
 
   //Pause Button
-  pauseBtn = createImg('pause-button.png', 'Pause Button');
+  pauseBtn = createImg('icons/pause-button.png', 'Pause Button');
   pauseBtn.style('width', '100px');
   pauseBtn.style('height', '100px');
   pauseBtn.mousePressed(togglePause); //
   pauseBtn.hide();
 
   //Play Button
-  playBtn = createImg('play-button.png', 'Play Button');
+  playBtn = createImg('icons/play-button.png', 'Play Button');
   playBtn.style('width', '100px');
   playBtn.style('height', '100px');
   playBtn.mousePressed(togglePause); 
   playBtn.hide();
 
   //Reset Button
-  resetBtn = createImg('reset.png', 'Reset Button');
+  resetBtn = createImg('icons/reset.png', 'Reset Button');
   resetBtn.style('width', '100px');
   resetBtn.style('height', '100px');
   resetBtn.mousePressed(resetKaraoke);
   resetBtn.hide();
-
-  //Btn posistion
-  // pauseBtn.position(width/2 - 50, height - 150);
-  // playBtn.position(width/2 - 50, height - 150);
-  // resetBtn.position(width/2 -200, height - 150);
 }
 
 //Draw function
@@ -354,8 +342,6 @@ function showTarget(){
   fill(0);
   textSize(20);
   textAlign(LEFT, TOP);
-  
-  let label; ///move to top
 
   if (target <= 0){
     text("Target: ", 20, 70);
@@ -548,9 +534,8 @@ function togglePause(){
     return;
   }
 
-  const shouldPause = currentSong.isPlaying();
-
   //switching btwn pause and play btn
+  const shouldPause = currentSong.isPlaying();
   if (shouldPause){ 
     currentSong.pause(); 
     scrollLyric = false;

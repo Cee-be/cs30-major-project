@@ -7,7 +7,7 @@
 
   <script>
     const ESP32_IP = "10.145.46.101";
-    const ws = new WebSocket(`ws://10.231.242.101:81/ws`);
+    const ws = new WebSocket(`ws://${ESP32_IP}:81/ws`);
     ws.binaryType = "arraybuffer";
 
     ws.onopen = () => document.getElementById("status").innerText = "Connected!";
