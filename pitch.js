@@ -122,16 +122,3 @@ ws.onmessage = (event) => {
 };
 
 
-//notes
-const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-
-//Conversion
-function frequencyToNote(fre){
-  const A4 = 440; //main
-  const semitone = Math.round(12 * Math.log2(fre/A4));
-
-  const noteIndex = (semitone + 9 + 120) % 12;
-  const octave = Math.floor((semitone + 9) / 12) + 4;
-
-  return NOTE_NAMES[noteIndex] + octave;
-}
