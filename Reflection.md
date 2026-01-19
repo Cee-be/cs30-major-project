@@ -27,4 +27,4 @@
 ### Q4
 ### Were there any problems you could not solve?
     - Accurate pitch detection. 
-    - Including a 
+    - Including a progress song bar
