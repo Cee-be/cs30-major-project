@@ -1,15 +1,40 @@
+.javascript
 // https://editor.p5js.org/dansakamoto/sketches/H1ICcXXtm
 // https://prismic.io/blog/css-button-animations
 // https://editor.p5js.org/codingtrain/sketches/1UggvR8ix
 // https://www.w3schools.com/tags/ref_canvas.asp
 // https://p5js.org/reference/p5/drawingContext/
 // https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_shadow
+// https://editor.p5js.org/elliehuang/sketches/ou0qEUgIR
+// https://p5js.org/hi/tutorials/simple-melody-app/
+// https://p5js.org/reference/p5/textWidth/
+// https://editor.p5js.org/laurate/sketches/sPDQ3qIxq
+// Audacity app - for time start and stop of songs'
+// https://github.com/sergiocruz/ng-karaoke -built: https://sergiocruz.github.io/ng-karaoke/
+// https://www.youtube.com/watch?v=WHMyaTy7PME
+
+
+Robotics
+https://ask.video/article/audio-hardware/how-to-build-a-condenser-microphone-for-less-than-8
+https://www.youtube.com/watch?v=zrGJ0ASsGmI
+https://www.youtube.com/watch?v=i9Dy6WnR4XI
+https://www.youtube.com/watch?v=6ptzvxqTfEc
+https://www.youtube.com/watch?v=_j5UO-791_4
+https://dronebotworkshop.com
+https://www.youtube.com/watch?v=qmruNKeIN-o&t=197s
+https://www.youtube.com/watch?v=pPh3_ciEmzs
+https://www.youtube.com/watch?v=m-MPBjScNRk&t=1744s
+https://www.youtube.com/watch?v=icEiGaew-G0
 
 style.css
 /* https://www.w3schools.com/howto/howto_css_glowing_text.asp */
 /* https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_two_columns */
 /* https://www.w3schools.com/css/tryit.asp?filename=trycss3_border-radius */
 /* https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_fullscreen_video */
+
+Logic
+// Gemini
+// ChatGPT
 
 https://esm.sh/pitchy@4 -- pitchy import
 

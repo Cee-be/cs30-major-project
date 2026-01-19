@@ -21,8 +21,6 @@ let layer;
 let p;
 let logoVisible = true;
 let scrollLyric = true;
-let waitingForSong = true;
-let isPaused = false;
 let logoimage;
 let theta = 0;
 let maxScale = 0.10;
@@ -40,8 +38,6 @@ let prev = null;
 let next = null;
 scrollingLyrics = [];
 lastLyric = "";
-let feedback =  "";
-let showedFinalScore = false;
 
 
 //Song list
@@ -72,7 +68,7 @@ const SONG_LIST = [
 ];
 
 //Pitch/Frequencies/Mary Had
-const MARY_TARGETS = [
+const TARGETS = [
   {t0: 6.0, t1: 7.0, freq: 329.6}, //E4
   {t0: 7.0, t1: 8.0, freq: 293.7}, //D4
   {t0: 8.0, t1: 9.0, freq: 261.6}, //C4
@@ -80,14 +76,6 @@ const MARY_TARGETS = [
   {t0: 10.0, t1: 11.0, freq: 329.6}, //E4
   {t0: 11.0, t1: 12.0, freq: 329.6}, //E4
   {t0: 12.0, t1: 13.0, freq: 329.6}, //E4
-];
-
-//Notes
-const NOTE_NAMES = [
-  "C", "C#", "D", 
-  "D#", "E", "F", 
-  "F#", "G", "G#", 
-  "A", "A#", "B"
 ];
 
 //Loading songs
@@ -135,7 +123,7 @@ function setup() {
 
 //Freq of song 4 match
 function getTargetFreq(t){
-  for (const a of MARY_TARGETS){
+  for (const a of TARGETS){
     if (t >= a.t0 && t < a.t1){
       return a.freq;
     }
@@ -260,13 +248,12 @@ class KaraokeLyrics {
     drawingContext.rect(leftX, y - h/2, clipW, h);
     drawingContext.clip();
 
-    //design
     fill('#F24FB3');
     text(current.lyric, x, y);
 
     drawingContext.restore();
 
-    //next
+    //next line
     if (next && next.lyric){
       textSize(26);
       fill(0, 90);
@@ -275,9 +262,8 @@ class KaraokeLyrics {
   }
 }
 
+//function of buttons
 function buttonfunction(){
-
-  //Start Button
   btn = createButton("Start Karaoke");
   btn.addClass("glow");
   btn.addClass("neon-btn");
@@ -289,21 +275,18 @@ function buttonfunction(){
   btn.position(width/2 - 150, height/2 + 50);
   btn.mousePressed(startKaraoke);
 
-  //Pause Button
   pauseBtn = createImg('icons/pause-button.png', 'Pause Button');
   pauseBtn.style('width', '100px');
   pauseBtn.style('height', '100px');
-  pauseBtn.mousePressed(togglePause); //
+  pauseBtn.mousePressed(togglePause); 
   pauseBtn.hide();
 
-  //Play Button
   playBtn = createImg('icons/play-button.png', 'Play Button');
   playBtn.style('width', '100px');
   playBtn.style('height', '100px');
   playBtn.mousePressed(togglePause); 
   playBtn.hide();
 
-  //Reset Button
   resetBtn = createImg('icons/reset.png', 'Reset Button');
   resetBtn.style('width', '100px');
   resetBtn.style('height', '100px');
@@ -316,15 +299,10 @@ function draw() {
   background('#C9C6D9');
   start();
   logoDraw();
-  waitForSong();
 
-  //Pitch related
   seePitch();
   showTarget();
   pitchScore();
-  scorePitch();
-  pitchFeedback();
-  showScore();
 }
 
 //pitch captured by mic
@@ -339,7 +317,7 @@ function seePitch(){
     text("Mic Pitch: ---", 20, 20);
   }
   else {
-    text("Mic Pitch: " + frequencyToNote(mic), 20, 20);
+    text("Mic Pitch: " + mic.toFixed(1) + " Hz", 20, 20);
   }
 }
 
@@ -361,17 +339,17 @@ function showTarget(){
   textAlign(LEFT, TOP);
 
   if (target <= 0){
-    text("Target: ---", 20, 70);
+    text("Target: ", 20, 70);
   }
   else{
-    text("Target: " + frequencyToNote(target), 20, 70);
+    text("Target: " + target.toFixed(1) + " Hz", 20, 70);
   }
 }
 
-//getting indexoftargetpitch
+//index of target pitch
 function getTargetIndex(t){
-  for (let i = 0; i < MARY_TARGETS.length; i++){
-    if (t >= MARY_TARGETS[i].t0 && t < MARY_TARGETS[i].t1){
+  for (let i = 0; i < TARGETS.length; i++){
+    if (t >= TARGETS[i].t0 && t < TARGETS[i].t1){
       return i;
     }
   }
@@ -395,20 +373,15 @@ function scorePitch(){
     return;
   }
 
-  let target = MARY_TARGETS[idx].freq;
+  let target = TARGETS[idx].freq;
   let diff = Math.abs(mic - target);
 
   if (mic > 0){
     if (diff <= 5){
       score += 2;
-      feedback = "Perfect!";
     }
-    else if (diff <= 15){
+    if (diff <= 15){
       score += 1;
-      feedback = "Good!";
-    }
-    else{
-      feedback = "Miss!";
     }
   }
   lastScoredIndex = idx;
@@ -422,34 +395,6 @@ function pitchScore(){
   text("Score: " + score, 20, 100);
 }
 
-//Pitch feedback
-function pitchFeedback(){
-  fill(0);
-  textSize(24);
-  textAlign(LEFT, TOP);
-  text("Result: " + feedback, 20, 130);
-}
-
-//Final score
-function showScore(){
-  if (!currentSong || !started || isPaused){
-    return;
-  }
-  if (showedFinalScore){
-    return;
-  }
-  if (!currentSong.isPlaying() && currentSong.currentTime() > 1){
-    showedFinalScore = true;
-
-    textAlign(CENTER, CENTER);
-    textFont("Courier New");
-    textStyle(NORMAL);
-    textSize(40);
-    fill(0);
-
-    text("Final Score: " + score, width/2, height/2);
-  }
-}
 
 //drawing the logo
 function logoDraw(){
@@ -468,16 +413,13 @@ function logoDraw(){
   theta += 0.05;
 }
 
-// intializing witha button click
+// intializing with button click
 function start(){
-  //button press start
   if (started && currentSong){
     textSize(36);
     textFont("Courier New");
     karaoke.display(currentSong.currentTime());
-    //text("Select Your Song", width/2 - 150 , height/2 - 150);
   }
-  //text style
   else {
     textFont('Courier New');
     textStyle(ITALIC);
@@ -489,7 +431,6 @@ function start(){
     text("Click 'Start Karaoke' to begin", width/2 , height/2 + 140);
   }
 
-  //hide and show of Srtbtn
   if (btnvisi){
     btn.show();
   }
@@ -498,12 +439,8 @@ function start(){
   }
 }
 
-// What happens when msc srts
+// Visual design/function
 function startKaraoke(){
-  score = 0;
-  lastScoredIndex = -1;
-
-  // canvas design
   canvas.parent("rightPanel");
   resizeCanvas(windowWidth * 0.78, windowHeight);
   showSongList();
@@ -514,16 +451,13 @@ function startKaraoke(){
   analyzer = new p5.Amplitude(0, 5);
   analyzer.setInput(currentSong);
 
-  //currentSong.play();
+  currentSong.play();
 
-  waitingForSong = true;
   started = true;
   btnvisi = false;
   logoVisible = false;
   scrollLyric = true;
-  showedFinalScore = false;
 
-  //button display
   pauseBtn.show();
   playBtn.hide();
   resetBtn.show();
@@ -534,36 +468,21 @@ function startKaraoke(){
   }
 }
 
-//display the list of songs
+//list of songs display
 function showSongList(){
   document.getElementById("leftPanel").classList.remove("hidden");
-}
-
-function waitForSong(){
-  if (waitingForSong){
-    fill(0);
-    textAlign(CENTER, CENTER);
-    textSize(32);
-    textFont("Courier New");
-    text("Choose your song", width/2, height/2);
-    return;
-  }
 }
 
 //selecting song
 function selectSong(i){
   loadSong(i);
-
-  waitingForSong = false;
-  currentSong.play();
-
+  currentSong.loop();
   if (videoEl && videoEl.src){
     videoEl.currentTime = 0;
     videoEl.play();
   }
-  //scrollLyric = true;
+  scrollLyric = true;
 
-  //btn display
   pauseBtn.show();
   playBtn.hide();
 }
@@ -571,7 +490,6 @@ function selectSong(i){
 
 //reset button function
 function resetKaraoke(){
-  //stopping song
   if (currentSong){
     currentSong.stop(); 
     currentSong.jump(0); 
@@ -579,15 +497,12 @@ function resetKaraoke(){
   started = false;
   btnvisi = true;
 
-  //hiding buttons
   pauseBtn.hide();
   playBtn.hide();
   resetBtn.hide();
-  //video.hide();
 
   document.getElementById("layout").classList.add("hidden");
 
-  //hiding features
   logoVisible = true;
   scrollLyric = false;
 
@@ -597,15 +512,16 @@ function resetKaraoke(){
   }
 }
 
-//wPuase button function
+//Pause/Play button toggle
 function togglePause(){
   if (!currentSong){
     return;
   }
 
-  if (currentSong.isPlaying()){ 
+  const shouldPause = currentSong.isPlaying();
+  if (shouldPause){ 
     currentSong.pause(); 
-    isPaused = true;
+    scrollLyric = false;
     pauseBtn.hide();
     playBtn.show();
 
@@ -615,22 +531,11 @@ function togglePause(){
   }
   else{
     currentSong.play();
-    isPaused = false;
+    scrollLyric = true;
     pauseBtn.show();
     playBtn.hide();
     if (videoEl && videoEl.src){
       videoEl.play();
     }
   }
-}
-
-//Conversion
-function frequencyToNote(fre){
-  const A4 = 440; //main
-  const semitone = Math.round(12 * Math.log2(fre/A4));
-
-  const noteIndex = (semitone + 9 + 120) % 12;
-  const octave = Math.floor((semitone + 9) / 12) + 4;
-
-  return NOTE_NAMES[noteIndex] + octave;
 }

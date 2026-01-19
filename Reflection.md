@@ -4,7 +4,9 @@
 
 ### Q1
 ### what advice would you give to yourself if you were to start a project like this again?
-- "Ceberta, next time please go small. The idea is nice and all but it crushed the both of us."
+- "Ceberta, next time please go small. The idea is nice and all but it crushed the both of us. 
+    Next time, instead  of using pitch to match with the user's voice with the song, try using speech
+    to text and match the words instead."
 
 ### Q2
 ### Did you complete everything in your “needs to have” list?
@@ -25,3 +27,4 @@
 ### Q4
 ### Were there any problems you could not solve?
     - Accurate pitch detection. 
+    - Including a 
